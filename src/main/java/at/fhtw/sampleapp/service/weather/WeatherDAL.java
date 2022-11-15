@@ -8,7 +8,7 @@ import at.fhtw.sampleapp.model.Weather;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeatherDAL{
+public class WeatherDAL{ //im DAL finden die Datenbank aufrufe statt
     private List<Weather> weatherData;
 
     public WeatherDAL() { //Get from Database
