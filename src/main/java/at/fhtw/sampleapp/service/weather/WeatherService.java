@@ -22,13 +22,17 @@ public class WeatherService implements Service {
     public Response handleRequest(Request request) {
         if (request.getMethod() == Method.GET &&
             request.getPathParts().size() > 1) {
+            //successful database query
             return this.weatherController.getWeather(request.getPathParts().get(1));
         } else if (request.getMethod() == Method.GET) {
+            //successful database query
             return this.weatherController.getWeather();
         } else if (request.getMethod() == Method.POST) {
+            //successful database query
             return this.weatherController.addWeather(request);
         }
 
+        //unsuccessful database query
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,

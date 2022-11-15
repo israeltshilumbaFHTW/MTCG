@@ -4,10 +4,9 @@ import java.sql.*;
 
 public class DatabaseConnection {
 
-    static DatabaseConnection databaseConnection = new DatabaseConnection();
     private static Connection connection = null;
+    private static DatabaseConnection databaseConnection;
     private DatabaseConnection() {
-
         String url = "jdbc:postgresql://localhost:5432/swe1db";
         String user = "swe1db";
         String pass = "swe1pw";
@@ -18,7 +17,10 @@ public class DatabaseConnection {
             exception.printStackTrace();
         }
     }
-    public static DatabaseConnection getDatabaseConnection() {
-        return databaseConnection;
+    public static Connection getDatabaseConnection() {
+        if (connection == null) {
+           databaseConnection = new DatabaseConnection();
+        }
+        return connection;
     }
 }
