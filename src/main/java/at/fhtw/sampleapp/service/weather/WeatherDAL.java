@@ -11,7 +11,7 @@ import java.util.List;
 public class WeatherDAL{
     private List<Weather> weatherData;
 
-    public WeatherDAL() {
+    public WeatherDAL() { //Get from Database
         weatherData = new ArrayList<>();
         weatherData.add(new Weather(1,"Vienna", 9.f));
         weatherData.add(new Weather(2,"Berlin", 8.f));
