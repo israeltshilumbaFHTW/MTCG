@@ -29,6 +29,7 @@ public class UserService implements Service {
             //return this.userController.
         }
 
+        //unsuccessful query
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
