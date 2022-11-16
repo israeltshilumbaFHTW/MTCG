@@ -7,11 +7,22 @@ public class User {
    private String user_name;
    private String user_password;
 
-  public User(int user_id, String user_name, String user_password) {
-     this.user_id = user_id;
-     this.user_name = user_name;
-     this.user_password = user_password;
-  }
+    public User(int user_id, String user_name, String user_password, int user_elo) {
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.user_password = user_password;
+        this.user_elo = user_elo;
+    }
+    public int getUser_elo() {
+        return user_elo;
+    }
+
+    public void setUser_elo(int user_elo) {
+        this.user_elo = user_elo;
+    }
+
+    private int user_elo;
+
 
     public int getUser_id() {
         return user_id;
