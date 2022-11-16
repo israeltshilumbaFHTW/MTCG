@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RepoUser {
@@ -22,15 +23,20 @@ public class RepoUser {
 
             statement.setInt(1, user_id);
             ResultSet queryResult = statement.executeQuery();
-            user = new User(
-                    queryResult.getInt(1),
-                    queryResult.getString(2),
-                    queryResult.getString(3),
-                    queryResult.getInt(4)
-            );
+            if (queryResult.next()) {
+                user = new User(
+                        queryResult.getInt(1),
+                        queryResult.getString(2),
+                        queryResult.getString(3),
+                        queryResult.getInt(4)
+                );
+            }
         } catch (SQLException e) {
-            System.err.println("Fehler bei der DB Query" );
+            System.err.println("Fehler bei der DB Query");
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("NULLPOINTER IM REPO USER FILE");
         }
         return user;
     }
@@ -52,14 +58,14 @@ public class RepoUser {
                     queryResult.getInt(4)
             );
         } catch (SQLException e) {
-            System.err.println("Fehler bei der DB Query" );
+            System.err.println("Fehler bei der DB Query");
             e.printStackTrace();
         }
         return user;
     }
 
     public List<User> getAllUsers() {
-        List<User> userList = null;
+        List<User> userList = new LinkedList<User>();
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM players"

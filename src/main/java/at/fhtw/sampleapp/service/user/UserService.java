@@ -16,7 +16,8 @@ public class UserService implements Service {
 
     @Override
     public Response handleRequest(Request request) {
-
+//Bug Fixing
+       /*
         if (request.getMethod() == Method.GET &&
             request.getPathParts().size() > 1) {
            //successful database query
@@ -28,7 +29,24 @@ public class UserService implements Service {
             return null;
             //return this.userController.
         }
+*/
+        try {
 
+            if (request.getMethod() == Method.GET &&
+                    request.getPathParts().size() > 1) {
+                //successful database query
+                return this.userController.getUser(request.getPathParts().get(1));
+            } else if (request.getMethod() == Method.GET) {
+                return this.userController.getUser();
+            } else if (request.getMethod() == Method.POST) {
+                //TODO: Post Method
+                return null;
+                //return this.userController.
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("NULLPOINTER IM USER SERVICE");
+        }
         //unsuccessful query
         return new Response(
                 HttpStatus.BAD_REQUEST,
