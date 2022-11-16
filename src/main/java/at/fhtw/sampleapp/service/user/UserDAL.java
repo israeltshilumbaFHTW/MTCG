@@ -11,20 +11,27 @@ public class UserDAL {
 
     public UserDAL() { //addUser
         //remove sampleData
-        int sampleId = 1;
-        String sampleName = "Israel";
-        String samplePassword = "Password";
+    }
+    public List<User> getAllUsers_DAL() {
+       List<User> userList = null;
+       RepoUser userRequest = new RepoUser();
 
-        userData = new ArrayList<>();
-        userData.add(new User(sampleId, sampleName, samplePassword));
+       userList = userRequest.getAllUsers();
+       return userList;
+    }
+    public User getUser_DAL(int user_id) {
+        User user = null;
+        RepoUser userRequest = new RepoUser();
+
+        user = userRequest.getUser(user_id);
+        return user;
     }
 
-    public User getUser(int user_id) {
-        User foundUser = this.userData.stream()
-                .filter(user -> user_id == user.getUser_id())
-                .findAny()
-                .orElse(null);
-        return foundUser;
-    }
+    public User getUser_DAL(String user_name) {
+        User user = null;
+        RepoUser userRequest = new RepoUser();
 
+        user = userRequest.getUser(user_name);
+        return user;
+    }
 }

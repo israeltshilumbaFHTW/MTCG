@@ -1,5 +1,63 @@
 package at.fhtw.sampleapp.service.user;
 
-public class UserController {
+import at.fhtw.httpserver.server.Response;
+import at.fhtw.sampleapp.model.User;
+import at.fhtw.sampleapp.controller.Controller;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import at.fhtw.httpserver.http.ContentType;
+import at.fhtw.httpserver.http.HttpStatus;
+import at.fhtw.httpserver.server.Request;
+import at.fhtw.httpserver.server.Response;
+import java.util.List;
 
+public class UserController extends Controller {
+    private UserDAL userDAL;
+
+    public UserController(UserDAL userDAL) {
+        this.userDAL = userDAL;
+    }
+
+    //GET /user/:id
+    public Response getUser(String user_id) {
+       try {
+           User userData = this.userDAL.getUser_DAL(Integer.parseInt(user_id));
+           String userDataJSON = this.getObjectMapper().writeValueAsString(userData);
+
+           return new Response(
+                   HttpStatus.OK,
+                   ContentType.JSON,
+                   userDataJSON
+           );
+       } catch (JsonProcessingException e) {
+           System.err.println("JSON processing error");
+           e.printStackTrace();
+           return new Response(
+                   HttpStatus.INTERNAL_SERVER_ERROR,
+                   ContentType.JSON,
+                   "{ \"message\" : \"Internal Server Error\" }"
+           );
+       }
+    }
+
+    public Response getUser() {
+        try {
+            List<User> userListData = this.userDAL.getAllUsers_DAL();
+
+            String userDataJSON = this.getObjectMapper().writeValueAsString(userListData);
+
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    userDataJSON
+            );
+        } catch (JsonProcessingException e) {
+            System.err.println("JSON processing error");
+            e.printStackTrace();
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ContentType.JSON,
+                    "{ \"message\" : \"Internal Server Error\" }"
+            );
+        }
+    }
 }

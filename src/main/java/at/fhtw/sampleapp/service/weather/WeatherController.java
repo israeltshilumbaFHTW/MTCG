@@ -17,7 +17,7 @@ public class WeatherController extends Controller {
         this.weatherDAL = weatherDAL;
     }
 
-    // GET /weather(:id
+    // GET /weather/:id
     public Response getWeather(String id)
     {
         try {
