@@ -34,4 +34,16 @@ public class UserDAL {
         user = userRequest.getUser(user_name);
         return user;
     }
+
+    public boolean createUser_DAL(String user_name, String user_password) {
+        final int defaultElo = 1000;
+        //check if username is already in use
+        RepoUser userRequest = new RepoUser();
+        boolean success = false;
+        if (userRequest.getUser(user_name) == null) { //user_name nicht vergeben
+            success = userRequest.postUser(user_name, user_password, defaultElo);
+        }
+        return success;
+    }
+
 }

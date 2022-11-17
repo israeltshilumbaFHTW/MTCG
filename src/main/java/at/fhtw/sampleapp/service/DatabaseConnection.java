@@ -14,6 +14,7 @@ public class DatabaseConnection {
             connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException exception) {
             exception.printStackTrace();
+            System.err.println("Fehler in der DatabaseConnection");
         }
     }
     public static Connection getDatabaseConnection() {

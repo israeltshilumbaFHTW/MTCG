@@ -46,20 +46,25 @@ public class RepoUser {
         try {
 
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM players WHERE user_id=?"
+                    "SELECT * FROM players WHERE user_name=?"
             );
 
             statement.setString(1, user_name);
             ResultSet queryResult = statement.executeQuery();
-            user = new User(
-                    queryResult.getInt(1),
-                    queryResult.getString(2),
-                    queryResult.getString(3),
-                    queryResult.getInt(4)
-            );
+            if (queryResult.next()) {
+                user = new User(
+                        queryResult.getInt(1),
+                        queryResult.getString(2),
+                        queryResult.getString(3),
+                        queryResult.getInt(4)
+                );
+            }
         } catch (SQLException e) {
             System.err.println("Fehler bei der DB Query");
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("NULLPOINTER IM REPO USER FILE");
         }
         return user;
     }
@@ -83,5 +88,25 @@ public class RepoUser {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    public boolean postUser(String user_name, String user_password, int user_elo) {
+         try {
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO players VALUES(DEFAULT,?,?,?)"
+             );
+             statement.setString(1,user_name);
+             statement.setString(2,user_password);
+             statement.setInt(3,user_elo);
+             boolean success = statement.execute();
+             return true;
+         } catch (SQLException e) {
+             e.printStackTrace();
+             System.err.println("Fehler beim Einfügen eines Users");
+         } catch (NullPointerException e) {
+             e.printStackTrace();
+             System.err.println("Null wird zurückgesendet");
+         }
+        return false;
     }
 }

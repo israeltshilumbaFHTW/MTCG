@@ -60,4 +60,29 @@ public class UserController extends Controller {
             );
         }
     }
+
+    public Response postUser(Request request) {
+        try {
+
+            // request.getBody() => "{ \"id\": 4, \"city\": \"Graz\", ... }
+            User user = this.getObjectMapper().readValue(request.getBody(), User.class);
+            ;
+
+            if (this.userDAL.createUser_DAL(user.getUser_name(), user.getUser_password())) {
+                return new Response(
+                        HttpStatus.CREATED,
+                        ContentType.JSON,
+                        "{ message: \"Success\" }"
+                );
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return new Response(
+                HttpStatus.BAD_REQUEST,
+                ContentType.JSON,
+                "{ \"message\" : \"Username not available\" }"
+        );
+    }
 }

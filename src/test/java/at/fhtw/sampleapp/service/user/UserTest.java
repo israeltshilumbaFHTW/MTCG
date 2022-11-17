@@ -52,4 +52,9 @@ public class UserTest {
 
         bufferedReader.close();
     }
+
+    @Test
+    void testUserServiceRegister() throws Exception {
+        URL url = new URL("http://localhost:10001/");
+    }
 }

@@ -39,8 +39,15 @@ public class UserService implements Service {
             } else if (request.getMethod() == Method.GET) {
                 return this.userController.getUser();
             } else if (request.getMethod() == Method.POST) {
+
                 //TODO: Post Method
-                return null;
+                try {
+
+                    return this.userController.postUser(request);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
                 //return this.userController.
             }
         } catch (NullPointerException e) {
