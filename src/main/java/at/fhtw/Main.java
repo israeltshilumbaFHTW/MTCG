@@ -4,6 +4,7 @@ import at.fhtw.httpserver.utils.Router;
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.sampleapp.db.DbInit;
 import at.fhtw.sampleapp.service.echo.EchoService;
+import at.fhtw.sampleapp.service.packages.PackageService;
 import at.fhtw.sampleapp.service.session.SessionService;
 import at.fhtw.sampleapp.service.user.UserService;
 import at.fhtw.sampleapp.service.weather.WeatherService;
