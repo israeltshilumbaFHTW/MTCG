@@ -39,11 +39,12 @@ public class UserDAL {
 
     public boolean createUser_DAL(String user_name, String user_password) {
         final int defaultElo = 1000;
+        final int defaultMoney = 20;
         //check if username is already in use
         RepoUser userRequest = new RepoUser();
         boolean success = false;
         if (userRequest.getUser(user_name) == null) { //user_name nicht vergeben
-            success = userRequest.postUser(user_name, user_password, defaultElo);
+            success = userRequest.postUser(user_name, user_password, defaultElo, defaultMoney);
         }
         return success;
     }

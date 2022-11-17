@@ -8,17 +8,19 @@ public class User {
    private String user_name;
    @JsonAlias({"Password"})
    private String user_password;
+   private int user_money;
 
    public User(){};
    public User(String user_name, String user_password){
        this.user_name = user_name;
        this.user_password = user_password;
    }
-    public User(int user_id, String user_name, String user_password, int user_elo) {
+    public User(int user_id, String user_name, String user_password, int user_elo, int user_money) {
         this.user_id = user_id;
         this.user_name = user_name;
         this.user_password = user_password;
         this.user_elo = user_elo;
+        this.user_money = user_money;
     }
     public int getUser_elo() {
         return user_elo;
@@ -54,4 +56,8 @@ public class User {
     public void setUser_password(String user_password) {
         this.user_password = user_password;
     }
+
+    public int getUser_money() {return  user_money;}
+
+    public void setUser_money(int user_money) { this.user_money = user_money;}
 }
