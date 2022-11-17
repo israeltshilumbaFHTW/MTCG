@@ -12,6 +12,7 @@ import at.fhtw.httpserver.server.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PackageController extends Controller{
 
@@ -22,7 +23,14 @@ public class PackageController extends Controller{
 
     public Response addPackage(Request request) {
         List<Card> cardList;
-
+        String authorisation = request.getHeaderMap().getHeader("Authorization");
+        if(!Objects.equals(authorisation, "Basic admin-mtcgToken")) {
+            return new Response(
+                    HttpStatus.FORBIDDEN,
+                    ContentType.JSON,
+                    "{\"message\" : \"Access Denied\"}"
+            );
+        }
         try {
             cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<Card>>(){});
 
@@ -30,16 +38,16 @@ public class PackageController extends Controller{
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
-                        "{ message: \"Login successful\" }"
+                        "{ message: \"Package added successfully\" }"
                 );
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return new Response(
-                HttpStatus.FORBIDDEN,
+                HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
-                "{\"message\" : \"Access Denied\"}"
+                "{\"message\" : \"Bad Request\"}"
         );
     }
 }
