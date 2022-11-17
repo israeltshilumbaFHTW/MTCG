@@ -1,4 +1,4 @@
-package at.fhtw.sampleapp.service.user;
+package at.fhtw.sampleapp.service.repoCollection;
 
 import at.fhtw.sampleapp.model.User;
 import at.fhtw.sampleapp.service.DatabaseConnection;
@@ -103,9 +103,6 @@ public class RepoUser {
          } catch (SQLException e) {
              e.printStackTrace();
              System.err.println("Fehler beim Einfügen eines Users");
-         } catch (NullPointerException e) {
-             e.printStackTrace();
-             System.err.println("Null wird zurückgesendet");
          }
         return false;
     }

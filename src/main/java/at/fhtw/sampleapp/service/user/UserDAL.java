@@ -1,8 +1,8 @@
 package at.fhtw.sampleapp.service.user;
 
 import at.fhtw.sampleapp.model.User;
+import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAL {
@@ -12,13 +12,15 @@ public class UserDAL {
     public UserDAL() { //addUser
         //remove sampleData
     }
-    public List<User> getAllUsers_DAL() {
-       List<User> userList = null;
-       RepoUser userRequest = new RepoUser();
 
-       userList = userRequest.getAllUsers();
-       return userList;
+    public List<User> getAllUsers_DAL() {
+        List<User> userList = null;
+        RepoUser userRequest = new RepoUser();
+
+        userList = userRequest.getAllUsers();
+        return userList;
     }
+
     public User getUser_DAL(int user_id) {
         User user = null;
         RepoUser userRequest = new RepoUser();
@@ -45,5 +47,6 @@ public class UserDAL {
         }
         return success;
     }
+
 
 }
