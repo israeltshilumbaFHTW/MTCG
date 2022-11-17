@@ -8,13 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class RepoCard {
-    private Connection connection = DatabaseConnection.getDatabaseConnection();
-    public boolean addCard(int card_id, String card_name, int card_damage) throws SQLException {
+    private final Connection connection = DatabaseConnection.getDatabaseConnection();
+    public boolean addCard(String card_id, String card_name, int card_damage) throws SQLException {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO cards VALUES (?,?,?)"
             );
-            statement.setInt(1, card_id);
+            statement.setString(1, card_id);
             statement.setString(2, card_name);
             statement.setInt(3, card_damage);
             statement.execute();

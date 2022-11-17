@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class Card {
     @JsonAlias({"Id"})
-    private int card_id;
+    private String card_id;
 
     @JsonAlias({"Name"})
     private String card_name;
@@ -15,17 +15,17 @@ public class Card {
 
     public Card(){}
 
-    public Card(int card_id, String card_name, int card_damage) {
+    public Card(String card_id, String card_name, int card_damage) {
         this.card_id = card_id;
         this.card_name = card_name;
         this.card_damage = card_damage;
     }
 
-    public int getCard_id() {
+    public String getCard_id() {
         return card_id;
     }
 
-    public void setCard_id(int card_id) {
+    public void setCard_id(String card_id) {
         this.card_id = card_id;
     }
 

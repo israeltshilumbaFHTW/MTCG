@@ -20,6 +20,7 @@ public class PackageDAL {
         cardList.forEach(
                 card -> {
                     try {
+                        //ToDo: check if card already exists
                         success.set(cardRequest.addCard(
                                 card.getCard_id(),
                                 card.getCard_name(),
