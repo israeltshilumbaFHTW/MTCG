@@ -8,13 +8,12 @@ import java.util.List;
 public class UserDAL {
     private List<User> userData;
 
-
     public UserDAL() { //addUser
         //remove sampleData
     }
 
     public List<User> getAllUsers_DAL() {
-        List<User> userList = null;
+        List<User> userList = null; //ToDo: null entfernen, nicht die eleganteste Lösung
         RepoUser userRequest = new RepoUser();
 
         userList = userRequest.getAllUsers();

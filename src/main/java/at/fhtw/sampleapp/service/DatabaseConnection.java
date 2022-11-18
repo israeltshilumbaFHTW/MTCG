@@ -10,6 +10,9 @@ public class DatabaseConnection {
         String user = "swe1user";
         String pass = "swe1pw";
 
+        //FAIL: Kann nicht eingefügt werden, es verlangt exceptions von files, die viel höher sind
+        //connection.setAutoCommit(false);
+
         try{
             connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException exception) {
@@ -17,7 +20,7 @@ public class DatabaseConnection {
             System.err.println("Fehler in der DatabaseConnection");
         }
     }
-    public static Connection getDatabaseConnection() {
+    public static Connection getDatabaseConnection(){
         if (connection == null) {
             databaseConnection = new DatabaseConnection();
         }

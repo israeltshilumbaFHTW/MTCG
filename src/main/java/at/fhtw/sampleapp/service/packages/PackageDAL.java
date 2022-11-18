@@ -15,7 +15,7 @@ public class PackageDAL {
 
     }
 
-    public boolean addPackageDAL(List<Card> cardList) {
+    public boolean addPackageDAL(List<Card> cardList){
         //add Cards to DB
         RepoCard cardRequest = new RepoCard();
         RepoPackages packageRequest = new RepoPackages();
