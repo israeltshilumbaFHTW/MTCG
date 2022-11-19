@@ -28,4 +28,10 @@ class UserDALTest {
         User queryId = userDAL.getUser_DAL(1);
         assertEquals(queryId.getUser_id(), user.getUser_id());
     }
+
+    @Test
+    void getUserBalance() {
+        UserDAL userDAL = new UserDAL();
+
+    }
 }

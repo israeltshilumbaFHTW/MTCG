@@ -96,20 +96,59 @@ public class RepoUser {
     }
 
     public boolean postUser(String user_name, String user_password, int user_elo, int user_money) {
-         try {
-             PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO players VALUES(DEFAULT,?,?,?,?)"
-             );
-             statement.setString(1,user_name);
-             statement.setString(2,user_password);
-             statement.setInt(3,user_elo);
-             statement.setInt(4,user_money);
-             boolean success = statement.execute();
-             return true;
-         } catch (SQLException e) {
-             e.printStackTrace();
-             System.err.println("Fehler beim Einfügen eines Users");
-         }
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?)"
+            );
+            statement.setString(1, user_name);
+            statement.setString(2, user_password);
+            statement.setInt(3, user_elo);
+            statement.setInt(4, user_money);
+            boolean success = statement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim Einfügen eines Users");
+        }
+        return false;
+    }
+
+
+    public int getUserBalance(int user_id) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT user_money FROM players WHERE user_id=?"
+            );
+
+            statement.setInt(1, user_id);
+            ResultSet queryResult = statement.executeQuery();
+            int userBalance = 0;
+            if (queryResult.next()) {
+                userBalance = queryResult.getInt(1);
+            }
+            return userBalance;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim Kontostand");
+        }
+        return 0;
+    }
+
+    public boolean updateUserBalance(int user_money, int user_id) {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE players SET user_money=? WHERE user_id=?"
+            );
+            statement.setInt(1, user_money);
+            statement.setInt(2, user_id);
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim ändern des User balance");
+            //ToDo: add Rollback
+        }
         return false;
     }
 }
