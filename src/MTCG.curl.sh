@@ -15,6 +15,7 @@ curl -X POST http://localhost:10001/users --header "Content-Type: application/js
 echo -e "\n"
 curl -X POST http://localhost:10001/users --header "Content-Type: application/json" -d "{\"Username\":\"admin\",    \"Password\":\"istrator\"}"
 echo -e "\n"
+echo -e "\n"
 
 echo should fail:
 curl -X POST http://localhost:10001/users --header "Content-Type: application/json" -d "{\"Username\":\"kienboec\", \"Password\":\"daniel\"}"
@@ -78,7 +79,7 @@ curl -X POST http://localhost:10001/transactions/packages --header "Content-Type
 echo -e "\n"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d ""
 echo -e "\n"
-echo s"hould fail (no package):"
+echo "should fail (no package):"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d ""
 echo -e "\n"
 echo -e "\n"
@@ -110,6 +111,8 @@ echo -e "\n"
 echo "8) show all acquired cards kienboec"
 read line
 curl -X GET http://localhost:10001/cards --header "Authorization: Basic kienboec-mtcgToken"
+echo -e "\n"
+echo -e "\n"
 echo "should fail (no token)"
 curl -X GET http://localhost:10001/cards
 echo -e "\n"

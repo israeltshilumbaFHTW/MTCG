@@ -3,6 +3,7 @@ package at.fhtw;
 import at.fhtw.httpserver.utils.Router;
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.sampleapp.db.DbInit;
+import at.fhtw.sampleapp.service.cards.CardService;
 import at.fhtw.sampleapp.service.echo.EchoService;
 import at.fhtw.sampleapp.service.packages.PackageService;
 import at.fhtw.sampleapp.service.session.SessionService;
@@ -41,6 +42,7 @@ public class Main {
         router.addService("/packages", new PackageService());
         router.addService("/transactions/packages", new TransactionService());
         router.addService("/transactions", new TransactionService());
+        router.addService("/cards", new CardService());
 
         return router;
     }
