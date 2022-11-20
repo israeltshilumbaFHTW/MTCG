@@ -20,14 +20,14 @@ public class UserRepoTest {
     @Test
     public void checkUserPackages() {
         RepoUserPackages repoUserPackages = new RepoUserPackages();
-        repoUserPackages.getUserPackage(1);
+        repoUserPackages.getUserPackages(1);
         List<Integer> userPackageId = new ArrayList<>();
 
         repoUserPackages.addUserPackage(1,1);
         repoUserPackages.addUserPackage(2,1);
         repoUserPackages.addUserPackage(3,1);
 
-        userPackageId = repoUserPackages.getUserPackage(1);
+        userPackageId = repoUserPackages.getUserPackages(1);
         assertEquals(userPackageId.size(), 3);
     }
 

@@ -13,21 +13,22 @@ public class RepoPackages {
     public int getPackageCount() throws SQLException {
         int packageCount = 0;
         try {
-           PreparedStatement statement = connection.prepareStatement(
-                   "SELECT count(*) AS count FROM packages;"
-           );
-          ResultSet queryResult = statement.executeQuery();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT count(*) AS count FROM packages;"
+            );
+            ResultSet queryResult = statement.executeQuery();
 
-          while(queryResult.next()) {
-              packageCount = queryResult.getInt(1);
-          }
-          return packageCount;
+            while (queryResult.next()) {
+                packageCount = queryResult.getInt(1);
+            }
+            return packageCount;
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Fehler beim count der Packages");
             connection.rollback();
+            return 0;
         }
-        return packageCount;
+        //return packageCount;
     }
 
     public boolean addPackage(int package_id) throws SQLException {
@@ -35,7 +36,7 @@ public class RepoPackages {
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO packages VALUES(?)"
             );
-            statement.setInt(1,package_id);
+            statement.setInt(1, package_id);
             statement.execute();
             return true;
 
@@ -45,5 +46,25 @@ public class RepoPackages {
             connection.rollback();
         }
         return false;
+    }
+
+    public boolean getPackage(int package_id) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT package_id FROM packages WHERE package_id=?"
+            );
+            statement.setInt(1, package_id);
+            ResultSet queryResult = statement.executeQuery();
+
+            int foundPackage = 0;
+            if(queryResult.next()) {
+                queryResult.getInt(1);
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler: Package konnte nicht gefunden werden");
+            return false;
+        }
     }
 }

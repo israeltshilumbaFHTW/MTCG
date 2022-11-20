@@ -134,7 +134,7 @@ public class RepoUser {
         return 0;
     }
 
-    public boolean updateUserBalance(int user_money, int user_id) {
+    public boolean updateUserBalance(int user_id, int user_money) {
         try {
             PreparedStatement statement = this.connection.prepareStatement(
                     "UPDATE players SET user_money=? WHERE user_id=?"

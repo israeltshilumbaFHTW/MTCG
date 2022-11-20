@@ -12,7 +12,7 @@ import java.util.List;
 public class RepoUserPackages {
     private Connection connection = DatabaseConnection.getDatabaseConnection();
 
-    public List<Integer>getUserPackage(int user_id) {
+    public List<Integer> getUserPackages(int user_id) {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT package_id FROM player_package_link WHERE user_id=?"

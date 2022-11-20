@@ -6,6 +6,7 @@ import at.fhtw.sampleapp.db.DbInit;
 import at.fhtw.sampleapp.service.echo.EchoService;
 import at.fhtw.sampleapp.service.packages.PackageService;
 import at.fhtw.sampleapp.service.session.SessionService;
+import at.fhtw.sampleapp.service.transaction.TransactionService;
 import at.fhtw.sampleapp.service.user.UserService;
 import at.fhtw.sampleapp.service.weather.WeatherService;
 
@@ -38,6 +39,8 @@ public class Main {
         router.addService("/users", new UserService());
         router.addService("/sessions", new SessionService());
         router.addService("/packages", new PackageService());
+        router.addService("/transactions/packages", new TransactionService());
+        router.addService("/transactions", new TransactionService());
 
         return router;
     }
