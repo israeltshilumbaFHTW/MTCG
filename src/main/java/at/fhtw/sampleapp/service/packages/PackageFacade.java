@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class PackageDAL {
+public class PackageFacade {
 
-    public PackageDAL() {
+    public PackageFacade() {
 
     }
 

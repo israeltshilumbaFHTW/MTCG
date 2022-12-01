@@ -23,9 +23,9 @@ public class PackageTest_DAL {
         cardList.add(card2);
         cardList.add(card3);
 
-        PackageDAL packageDAL = new PackageDAL();
+        PackageFacade packageFacade = new PackageFacade();
 
-        boolean success = packageDAL.addPackageDAL(cardList);
+        boolean success = packageFacade.addPackageDAL(cardList);
         assertNotEquals(success, false);
     }
 }

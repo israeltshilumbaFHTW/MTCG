@@ -32,11 +32,11 @@ CREATE TABLE stacks
 
 CREATE TABLE decks
 (
+    deck_id SERIAL,
     user_id int NOT NULL,
-    deck_id int NOT NULL,
     PRIMARY KEY (deck_id),
 
-    CONSTRAINT fk_user_id
+    CONSTRAINT fk_player
         FOREIGN KEY (user_id)
             REFERENCES players (user_id)
             ON DELETE CASCADE
@@ -56,8 +56,8 @@ CREATE TABLE packages
     package_id int NOT NULL,
     PRIMARY KEY (package_id)
 );
--- TODO: many to many relationship for cards and decks
--- TODO: DONE
+
+-- ToDo: card n:m deck
 CREATE TABLE card_deck_link
 (
     card_id varchar(255) NOT NULL,
@@ -119,3 +119,6 @@ CREATE TABLE player_package_link (
             REFERENCES packages (package_id)
             ON DELETE CASCADE
 );
+
+--User card Tabelle als resultat
+

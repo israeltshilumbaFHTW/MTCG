@@ -2,8 +2,6 @@ package at.fhtw.sampleapp.service.packages;
 
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Card;
-import at.fhtw.sampleapp.model.User;
-import at.fhtw.sampleapp.service.packages.PackageDAL;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
@@ -16,9 +14,9 @@ import java.util.Objects;
 
 public class PackageController extends Controller{
 
-    private PackageDAL packageDAL;
-    public PackageController(PackageDAL packageDAL) {
-        this.packageDAL = packageDAL;
+    private PackageFacade packageFacade;
+    public PackageController(PackageFacade packageFacade) {
+        this.packageFacade = packageFacade;
     }
 
     public Response addPackage(Request request) {
@@ -34,7 +32,7 @@ public class PackageController extends Controller{
         try {
             cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<Card>>(){});
 
-            if (this.packageDAL.addPackageDAL(cardList)) {
+            if (this.packageFacade.addPackageDAL(cardList)) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,

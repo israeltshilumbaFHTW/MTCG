@@ -1,5 +1,6 @@
 package at.fhtw.sampleapp.service.repoCollection;
 
+import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.model.User;
 import at.fhtw.sampleapp.service.DatabaseConnection;
 
@@ -7,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -150,5 +152,39 @@ public class RepoUser {
             //ToDo: add Rollback
         }
         return false;
+    }
+
+    public List<String> getStrongestCardsFromUser(int user_id) {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    """ 
+                        SELECT cards.card_id 
+                        FROM player_package_link
+                            LEFT JOIN card_package_link
+                                ON player_package_link.package_id = card_package_link.package_id
+                            LEFT JOIN cards
+                                ON card_package_link.card_id = cards.card_id
+                        WHERE user_id = ?
+                        ORDER BY card_damage DESC
+                        LIMIT 4 OFFSET 0
+                        """
+            );
+
+           statement.setInt(1, user_id);
+           ResultSet queryResult = statement.executeQuery();
+
+           List<String> cardIdList = new ArrayList<>();
+
+           while(queryResult.next()) {
+               cardIdList.add(queryResult.getString(1));
+           }
+
+           return cardIdList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error: getStrongestCardsFromUser -> RepoUser");
+        }
+        return new ArrayList<>();
     }
 }
