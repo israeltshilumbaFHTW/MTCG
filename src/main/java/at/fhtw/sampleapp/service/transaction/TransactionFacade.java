@@ -6,9 +6,9 @@ import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserPacka
 
 import java.util.List;
 
-public class TransactionDAL {
+public class TransactionFacade {
 
-    public TransactionDAL() {
+    public TransactionFacade() {
     }
 
     public boolean buyPackage(int user_id) {

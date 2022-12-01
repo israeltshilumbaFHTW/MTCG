@@ -9,9 +9,9 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 public class SessionController extends Controller{
 
-    private SessionDAL sessionDAL;
-    public SessionController(SessionDAL sessionDAL) {
-        this.sessionDAL = sessionDAL;
+    private SessionFacade sessionFacade;
+    public SessionController(SessionFacade sessionFacade) {
+        this.sessionFacade = sessionFacade;
     }
 
     public Response userLogin(Request request) {
@@ -19,7 +19,7 @@ public class SessionController extends Controller{
         try {
             User user = this.getObjectMapper().readValue(request.getBody(), User.class);
 
-            if (this.sessionDAL.userLoginDAL(user.getUser_name(), user.getUser_password())) {
+            if (this.sessionFacade.userLoginDAL(user.getUser_name(), user.getUser_password())) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,

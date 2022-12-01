@@ -4,9 +4,9 @@ import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 
 import java.util.Objects;
 
-public class SessionDAL {
+public class SessionFacade {
 
-    public SessionDAL() {
+    public SessionFacade() {
 
     }
 

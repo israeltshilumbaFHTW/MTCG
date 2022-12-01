@@ -7,20 +7,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
-import at.fhtw.httpserver.server.Response;
+
 import java.util.List;
 
 public class UserController extends Controller {
-    private UserDAL userDAL;
+    private UserFacade userFacade;
 
-    public UserController(UserDAL userDAL) {
-        this.userDAL = userDAL;
+    public UserController(UserFacade userFacade) {
+        this.userFacade = userFacade;
     }
 
     //GET /user/:id
     public Response getUser(String user_id) {
        try {
-           User userData = this.userDAL.getUser_DAL(Integer.parseInt(user_id));
+           User userData = this.userFacade.getUser_DAL(Integer.parseInt(user_id));
            String userDataJSON = this.getObjectMapper().writeValueAsString(userData);
 
            return new Response(
@@ -41,7 +41,7 @@ public class UserController extends Controller {
 
     public Response getUser() {
         try {
-            List<User> userListData = this.userDAL.getAllUsers_DAL();
+            List<User> userListData = this.userFacade.getAllUsers_DAL();
 
             String userDataJSON = this.getObjectMapper().writeValueAsString(userListData);
 
@@ -65,7 +65,7 @@ public class UserController extends Controller {
         try {
             User user = this.getObjectMapper().readValue(request.getBody(), User.class);
 
-            if (this.userDAL.createUser_DAL(user.getUser_name(), user.getUser_password())) {
+            if (this.userFacade.createUser_DAL(user.getUser_name(), user.getUser_password())) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,

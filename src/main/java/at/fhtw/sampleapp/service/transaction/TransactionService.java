@@ -12,7 +12,7 @@ public class TransactionService implements Service {
     private final TransactionController transactionController;
 
     public TransactionService() {
-        this.transactionController = new TransactionController(new TransactionDAL());
+        this.transactionController = new TransactionController(new TransactionFacade());
     }
 
     @Override

@@ -7,18 +7,16 @@ import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
-import at.fhtw.sampleapp.service.packages.PackageController;
-import at.fhtw.sampleapp.service.packages.PackageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import java.util.Map;
 
 public class CardController extends Controller {
-    private CardDAL cardDAL;
+    private CardFacade cardFacade;
 
-    public CardController(CardDAL cardDAL) {
-        this.cardDAL = cardDAL;
+    public CardController(CardFacade cardFacade) {
+        this.cardFacade = cardFacade;
     }
 
     public Response getCardsWithId(Request request) {
@@ -28,7 +26,7 @@ public class CardController extends Controller {
             String authorization = request.getHeaderMap().getHeader("Authorization");
             int user_id = userAuthorization.get(authorization);
 
-            List<Card> cardList = this.cardDAL.getCardsFromPlayer(user_id);
+            List<Card> cardList = this.cardFacade.getCardsFromPlayer(user_id);
 
             String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
 

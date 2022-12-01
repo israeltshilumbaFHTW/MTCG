@@ -8,13 +8,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CardDALTest {
+class CardFacadeTest {
 
     @Test
     public void getCardsFromPlayer() {
-        CardDAL cardDAL = new CardDAL();
+        CardFacade cardFacade = new CardFacade();
         List<Card> cardList = new ArrayList<>();
-        cardList = cardDAL.getCardsFromPlayer(1);
+        cardList = cardFacade.getCardsFromPlayer(1);
         assertEquals(20, cardList.size());
     }
 }

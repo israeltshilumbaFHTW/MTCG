@@ -11,7 +11,7 @@ public class CardService implements Service {
     private final CardController cardController;
 
     public CardService() {
-        this.cardController = new CardController(new CardDAL());
+        this.cardController = new CardController(new CardFacade());
     }
 
     @Override

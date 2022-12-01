@@ -11,7 +11,7 @@ public class UserService implements Service {
     private final UserController userController;
 
     public UserService() {
-        this.userController = new UserController(new UserDAL());
+        this.userController = new UserController(new UserFacade());
     }
 
     @Override

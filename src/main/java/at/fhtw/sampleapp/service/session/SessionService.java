@@ -7,13 +7,11 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
 
-import javax.net.ssl.SSLSessionContext;
-
 public class SessionService implements Service {
     private final SessionController sessionController;
 
     public SessionService() {
-        this.sessionController = new SessionController(new SessionDAL());
+        this.sessionController = new SessionController(new SessionFacade());
     }
 
     @Override

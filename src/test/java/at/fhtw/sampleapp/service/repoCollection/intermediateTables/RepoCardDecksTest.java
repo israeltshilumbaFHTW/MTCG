@@ -15,10 +15,10 @@ class RepoCardDecksTest {
     void addCardDeckId() {
         RepoCardDecks repoCardDecks = new RepoCardDecks();
 
-        repoCardDecks.addCardDeckId("testcard1", 1);
-        repoCardDecks.addCardDeckId("testcard2", 1);
-        repoCardDecks.addCardDeckId("testcard3", 1);
-
+        repoCardDecks.addCardDeckId("99f8f8dc-e25e-4a95-aa2c-782823f36e2a", 2);
+        repoCardDecks.addCardDeckId("1cb6ab86-bdb2-47e5-b6e4-68c5ab389334", 2);
+        repoCardDecks.addCardDeckId("dfdd758f-649c-40f9-ba3a-8657f4b3439f", 2);
+        repoCardDecks.addCardDeckId("e85e3976-7c86-4d06-9a80-641c2019a79f", 2);
 
         List<String> cardList = new ArrayList<>();
         List<Integer> deckIdList = new ArrayList<>();
@@ -31,7 +31,7 @@ class RepoCardDecksTest {
                 cardList.add(card_id);
             });
         });
-        assertEquals(3, cardList.size());
+        assertEquals(4, cardList.size());
 
     }
 

@@ -5,10 +5,10 @@ import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 
 import java.util.List;
 
-public class UserDAL {
+public class UserFacade {
     private List<User> userData;
 
-    public UserDAL() { //addUser
+    public UserFacade() { //addUser
         //remove sampleData
     }
 

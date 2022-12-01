@@ -10,10 +10,10 @@ import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import java.util.Map;
 
 public class TransactionController extends Controller {
-    private TransactionDAL transactionDAL;
+    private TransactionFacade transactionFacade;
 
-    public TransactionController(TransactionDAL transactionDAL) {
-        this.transactionDAL = transactionDAL;
+    public TransactionController(TransactionFacade transactionFacade) {
+        this.transactionFacade = transactionFacade;
     }
 
     public Response buyCard(Request request) {
@@ -21,7 +21,7 @@ public class TransactionController extends Controller {
 
             String authorisation = request.getHeaderMap().getHeader("Authorization");
             int user_id = userAuthorization.get(authorisation);
-            if (this.transactionDAL.buyPackage(user_id)) {
+            if (this.transactionFacade.buyPackage(user_id)) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
