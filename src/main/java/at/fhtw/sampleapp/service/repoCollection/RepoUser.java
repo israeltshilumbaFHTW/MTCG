@@ -32,7 +32,8 @@ public class RepoUser {
                         queryResult.getString(2),
                         queryResult.getString(3),
                         queryResult.getInt(4),
-                        queryResult.getInt(5)
+                        queryResult.getInt(5),
+                        queryResult.getBoolean(6)
                 );
             }
         } catch (SQLException e) {
@@ -61,7 +62,8 @@ public class RepoUser {
                         queryResult.getString(2),
                         queryResult.getString(3),
                         queryResult.getInt(4),
-                        queryResult.getInt(5)
+                        queryResult.getInt(5),
+                        queryResult.getBoolean(6)
                 );
             }
         } catch (SQLException e) {
@@ -87,7 +89,8 @@ public class RepoUser {
                         queryResult.getString(2),
                         queryResult.getString(3),
                         queryResult.getInt(4),
-                        queryResult.getInt(5)
+                        queryResult.getInt(5),
+                        queryResult.getBoolean(6)
                 );
                 userList.add(user);
             }
@@ -97,17 +100,19 @@ public class RepoUser {
         return userList;
     }
 
-    public boolean postUser(String user_name, String user_password, int user_elo, int user_money) {
+    public boolean postUser(String user_name, String user_password, int user_elo, int user_money, boolean defaultDeck) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?)"
+                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?,?)"
             );
             statement.setString(1, user_name);
             statement.setString(2, user_password);
             statement.setInt(3, user_elo);
             statement.setInt(4, user_money);
-            boolean success = statement.execute();
+            statement.setBoolean(5, defaultDeck);
+            statement.execute();
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Fehler beim Einfügen eines Users");
@@ -154,11 +159,30 @@ public class RepoUser {
         return false;
     }
 
-    public List<String> getStrongestCardsFromUser(int user_id) {
+    public boolean updateDefaultDeckBoolean(int user_id) {
+
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE players SET user_defaultdeck=? WHERE user_id=?"
+            );
+            statement.setBoolean(1, false);
+            statement.setInt(2, user_id);
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim ändern des User balance");
+            //ToDo: add Rollback
+        }
+        return false;
+    }
+
+    public List<Card> getStrongestCardsFromUser(int user_id) {
         try {
             PreparedStatement statement = this.connection.prepareStatement(
                     """ 
-                        SELECT cards.card_id 
+                        SELECT cards.card_id, cards.card_name, cards.card_damage
                         FROM player_package_link
                             LEFT JOIN card_package_link
                                 ON player_package_link.package_id = card_package_link.package_id
@@ -173,13 +197,18 @@ public class RepoUser {
            statement.setInt(1, user_id);
            ResultSet queryResult = statement.executeQuery();
 
-           List<String> cardIdList = new ArrayList<>();
+           List<Card> cardList = new ArrayList<>();
 
            while(queryResult.next()) {
-               cardIdList.add(queryResult.getString(1));
+               Card card = new Card(
+                           queryResult.getString(1),
+                           queryResult.getString(2),
+                           queryResult.getInt(3)
+               );
+               cardList.add(card);
            }
 
-           return cardIdList;
+           return cardList;
 
         } catch (SQLException e) {
             e.printStackTrace();

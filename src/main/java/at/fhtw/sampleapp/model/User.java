@@ -9,18 +9,20 @@ public class User {
    @JsonAlias({"Password"})
    private String user_password;
    private int user_money;
+   private boolean defaultDeck;
 
    public User(){};
    public User(String user_name, String user_password){
        this.user_name = user_name;
        this.user_password = user_password;
    }
-    public User(int user_id, String user_name, String user_password, int user_elo, int user_money) {
+    public User(int user_id, String user_name, String user_password, int user_elo, int user_money, boolean defaultDeck) {
         this.user_id = user_id;
         this.user_name = user_name;
         this.user_password = user_password;
         this.user_elo = user_elo;
         this.user_money = user_money;
+        this.defaultDeck = defaultDeck;
     }
     public int getUser_elo() {
         return user_elo;

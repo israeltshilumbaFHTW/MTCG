@@ -127,6 +127,7 @@ echo -e "\n"
 
 # --------------------------------------------------
 echo "10) show unconfigured deck"
+echo "Shows first four strongest cards"
 read line
 curl -X GET http://localhost:10001/deck --header "Authorization: Basic kienboec-mtcgToken"
 echo -e "\n"

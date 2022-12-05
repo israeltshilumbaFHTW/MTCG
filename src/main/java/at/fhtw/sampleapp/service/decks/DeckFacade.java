@@ -23,16 +23,18 @@ public class DeckFacade {
         //ToDo: can be simplified by using joined tables
         int deckCount = repoDecks.getDeckCount();
         //ToDo: get highest Damage card_id
-        List<String> highestDamageCards = new ArrayList<>();
+        List<Card> highestDamageCards = new ArrayList<>();
         highestDamageCards = repoUser.getStrongestCardsFromUser(user_id);
 
         //ToDo: add entry to card_deck_link table
         highestDamageCards.forEach(
-               cardId -> {
-                   repoCardDecks.addCardDeckId(cardId, deckCount);
+               card -> {
+                   repoCardDecks.addCardDeckId(card.getCard_id(), deckCount);
                }
         );
-
-        return new ArrayList<>();
+        //change defaultDeck to false
+        repoUser.updateDefaultDeckBoolean(user_id);
+        return highestDamageCards;
+        //ToDo: in case there is an error: add rollback, return empty list
     }
 }

@@ -11,16 +11,15 @@ class UserFacadeTest {
     void createDuplicateUser_DAL() {
         UserFacade userFacade = new UserFacade();
         //create user that already exists
-        boolean success = true;
-        assertEquals(userFacade.createUser_DAL("herbert", "schneckerl"), success);
-        assertNotEquals(userFacade.createUser_DAL("herbert", "schneckerl"), success);
+        assertEquals(true, userFacade.createUser_DAL("herbert", "schneckerl"));
+        assertEquals(false, userFacade.createUser_DAL("herbert", "schneckerl"));
     }
 
     @Test
     void getUserTest_DAL() {
         UserFacade userFacade = new UserFacade();
         //get herbert with name
-        User user = new User(1, "herbert", "schneckerl", 1000, 20 );
+        User user = new User(1, "herbert", "schneckerl", 1000, 20, true );
         User queryName = userFacade.getUser_DAL("herbert");
         assertEquals(queryName.getUser_id(), user.getUser_id());
         //get herbert with id
