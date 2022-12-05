@@ -29,10 +29,10 @@ public class RepoCardDecks {
         return false;
     }
 
-    public List<String> getCardInDeck(int deck_id) {
+    public List<String> getCardsInDeck(int deck_id) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT card_id FROM card_package_link WHERE package_id=?"
+                    "SELECT card_id FROM card_deck_link WHERE deck_id=?"
             );
             statement.setInt(1, deck_id);
             ResultSet queryResult = statement.executeQuery();
@@ -44,7 +44,7 @@ public class RepoCardDecks {
             return cardIdList;
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Fehler: error at getCardInPackage");
+            System.err.println("Fehler: error at getCardsInDeck");
             throw new RuntimeException(e);
         }
     }

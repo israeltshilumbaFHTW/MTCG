@@ -4,6 +4,7 @@ import at.fhtw.sampleapp.service.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RepoDecks {
@@ -24,5 +25,26 @@ public class RepoDecks {
             System.err.println("Fehler: addDeck in RepoDecks");
         }
         return false;
+    }
+
+    public int getDeckCount() {
+        int deckCount = 0;
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT count(*) AS count FROM decks;"
+            );
+            ResultSet queryResult = statement.executeQuery();
+
+            while (queryResult.next()) {
+                deckCount = queryResult.getInt(1);
+            }
+            return deckCount;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim count der Packages");
+            //connection.rollback();
+            return 0;
+        }
+        //return packageCount;
     }
 }

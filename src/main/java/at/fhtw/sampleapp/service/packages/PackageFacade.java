@@ -28,7 +28,7 @@ public class PackageFacade {
             success.set(packageRequest.addPackage(package_count + 1));
             //ToDo: insert id into package table
             cardList.forEach(
-                    card -> {
+                card -> {
                         try {
                             //ToDo: check if card already exists
                             success.set(cardRequest.addCard(
@@ -41,7 +41,7 @@ public class PackageFacade {
                             System.err.println("Fehler beim einfügen von Packages DAL");
                             throw new RuntimeException(e); //necessary because of AtomicBoolean
                         }
-                    }
+                }
 
             );
         } catch (SQLException e) {

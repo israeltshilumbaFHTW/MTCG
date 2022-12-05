@@ -1,6 +1,5 @@
 package at.fhtw.sampleapp.service.repoCollection.intermediateTables;
 
-import at.fhtw.sampleapp.model.Card;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ class RepoCardDecksTest {
         deckIdList.add(1);
 
         deckIdList.forEach(deck_id -> {
-            List<String> queryCardIdLIst = repoCardDecks.getCardInDeck(1);
+            List<String> queryCardIdLIst = repoCardDecks.getCardsInDeck(1);
             queryCardIdLIst.forEach(card_id -> {
                 cardList.add(card_id);
             });

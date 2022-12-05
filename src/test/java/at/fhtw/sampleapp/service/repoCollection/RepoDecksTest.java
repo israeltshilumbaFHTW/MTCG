@@ -14,4 +14,13 @@ class RepoDecksTest {
         //assume that DB already has entries
         repoDecks.addDeck(1);
     }
+
+    @Test
+    void getDeckCount() {
+        RepoDecks repoDecks = new RepoDecks();
+
+        int deckCount = repoDecks.getDeckCount();
+
+        assertEquals(1, deckCount);
+    }
 }
