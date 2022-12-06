@@ -15,23 +15,12 @@ public class DeckFacade {
 
     public List<Card> getDefaultDeck(int user_id) { //if user has an unconfigured deck
         RepoUser repoUser = new RepoUser();
-        RepoCardDecks repoCardDecks = new RepoCardDecks();
-        //ToDo: add entry to deck_table (auto increment table)
         RepoDecks repoDecks = new RepoDecks();
-        repoDecks.addDeck(user_id);
-        //ToDO: get highest entry in decks table -> our deck_id
-        //ToDo: can be simplified by using joined tables
-        int deckCount = repoDecks.getDeckCount();
-        //ToDo: get highest Damage card_id
+
         List<Card> highestDamageCards = new ArrayList<>();
         highestDamageCards = repoUser.getStrongestCardsFromUser(user_id);
 
-        //ToDo: add entry to card_deck_link table
-        highestDamageCards.forEach(
-               card -> {
-                   repoCardDecks.addCardDeckId(card.getCard_id(), deckCount);
-               }
-        );
+        repoDecks.addDeck(user_id, highestDamageCards.get(0).getCard_id(), highestDamageCards.get(1).getCard_id(),  highestDamageCards.get(2).getCard_id(),  highestDamageCards.get(3).getCard_id());
         //change defaultDeck to false
         repoUser.updateDefaultDeckBoolean(user_id);
         return highestDamageCards;

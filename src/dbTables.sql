@@ -10,11 +10,13 @@ DROP TABLE IF EXISTS players;
 
 CREATE TABLE players
 (
-    user_id       SERIAL,
-    user_name     varchar(255) NOT NULL,
-    user_password varchar(255) NOT NULL,
-    user_elo      int          NOT NULL,
-    user_money    int          NOT NULL,
+    user_id          SERIAL,
+    user_name        varchar(255) NOT NULL,
+    user_password    varchar(255) NOT NULL,
+    user_elo         int          NOT NULL,
+    user_money       int          NOT NULL,
+    user_defaultDeck boolean      NOT NULL,
+
     PRIMARY KEY (user_id)
 );
 
@@ -34,6 +36,11 @@ CREATE TABLE decks
 (
     deck_id SERIAL,
     user_id int NOT NULL,
+    card_1_id varchar(255),
+    card_2_id varchar(255),
+    card_3_id varchar(255),
+    card_4_id varchar(255),
+
     PRIMARY KEY (deck_id),
 
     CONSTRAINT fk_player
@@ -106,19 +113,20 @@ CREATE TABLE card_package_link
             ON DELETE CASCADE
 );
 
-CREATE TABLE player_package_link (
-    user_id int NOT NULL,
+CREATE TABLE player_package_link
+(
+    user_id    int NOT NULL,
     package_id int NOT NULL,
 
     CONSTRAINT fk_user_id
-             FOREIGN KEY (user_id)
-                REFERENCES players (user_id)
-                ON DELETE CASCADE,
+        FOREIGN KEY (user_id)
+            REFERENCES players (user_id)
+            ON DELETE CASCADE,
     CONSTRAINT fk_package_id
         FOREIGN KEY (package_id)
             REFERENCES packages (package_id)
             ON DELETE CASCADE
 );
 
---User card Tabelle als resultat
 
+--user Card tabelle

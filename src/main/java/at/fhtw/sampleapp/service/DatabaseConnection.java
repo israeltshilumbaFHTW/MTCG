@@ -14,7 +14,7 @@ public class DatabaseConnection {
 
         try{
             connection = DriverManager.getConnection(url, user, pass);
-            connection.setAutoCommit(false);
+            //connection.setAutoCommit(false);
         } catch (SQLException exception) {
             exception.printStackTrace();
             System.err.println("Fehler in der DatabaseConnection");

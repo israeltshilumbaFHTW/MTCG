@@ -24,7 +24,7 @@ public class RepoCard {
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Fehler beim Einfügen einer Karte");
-            connection.rollback();
+            //connection.rollback();
         }
         return false;
     }

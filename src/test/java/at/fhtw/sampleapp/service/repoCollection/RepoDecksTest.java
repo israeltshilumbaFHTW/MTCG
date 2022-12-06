@@ -9,10 +9,9 @@ class RepoDecksTest {
     @Test
     void addDeck() {
         RepoDecks repoDecks = new RepoDecks();
-        RepoUser repoUser = new RepoUser();
         //if table is empty assert that there is only one entry after test
         //assume that DB already has entries
-        repoDecks.addDeck(1);
+        repoDecks.addDeck(1, "card_1", "card_2", "card_3", "card_4");
     }
 
     @Test
