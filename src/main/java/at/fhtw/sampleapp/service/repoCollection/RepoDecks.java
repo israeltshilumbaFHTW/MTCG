@@ -17,8 +17,11 @@ public class RepoDecks {
     public boolean addDeck(int user_id, String card_1_id, String card_2_id, String card_3_id, String card_4_id) { //Todo: change card_1_id,...,card_2_id
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO decks VALUES(DEFAULT,?,?,?,?,?)"
+                    """
+                        INSERT INTO decks VALUES(DEFAULT,?,?,?,?,?)
+                        """
             );
+
 
             statement.setInt(1, user_id);
             statement.setString(2, card_1_id);
@@ -35,6 +38,32 @@ public class RepoDecks {
         return false;
     }
 
+
+    public boolean updateDeck(int user_id, String card_1_id, String card_2_id, String card_3_id, String card_4_id) { //Todo: change card_1_id,...,card_2_id
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                        UPDATE decks
+                        SET card_1_id = ?, card_2_id = ?, card_3_id = ?, card_4_id = ?
+                        WHERE user_id = ?
+                        """
+            );
+
+            statement.setString(1, card_1_id);
+            statement.setString(2, card_2_id);
+            statement.setString(3, card_3_id);
+            statement.setString(4, card_4_id);
+            statement.setInt(5, user_id);
+
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler: addDeck in RepoDecks");
+        }
+        return false;
+    }
     public int getDeckCount() {
         int deckCount = 0;
         try {

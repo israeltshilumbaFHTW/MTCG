@@ -60,4 +60,12 @@ public class DeckFacade {
         RepoUser repoUser = new RepoUser();
         return repoUser.getDefaultDeckBoolean(user_id);
     }
+
+    public boolean updateDeck(int user_id, List<String> cardIdList) {
+
+        RepoUser repoUser = new RepoUser();
+        RepoDecks repoDecks = new RepoDecks();
+        //error handling missing
+        return repoDecks.updateDeck(user_id, cardIdList.get(0), cardIdList.get(1), cardIdList.get(2), cardIdList.get(3));
+    }
 }

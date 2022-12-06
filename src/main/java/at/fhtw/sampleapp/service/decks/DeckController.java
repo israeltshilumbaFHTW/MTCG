@@ -8,6 +8,7 @@ import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
 import java.util.Map;
@@ -19,26 +20,43 @@ public class DeckController extends Controller {
 
     public Response changeCurrentDeck(Request request) {
 
-        Map<String, Integer> userAuthorization = UserAuthorizationMap.getAuthorization();
-        String authorization = request.getHeaderMap().getHeader("Authorization");
-        int user_id = userAuthorization.get(authorization); //should be null if user doesn't exist
-
-        //check if user has already a custom deck
-        /*
-        if (deckFacade.getDefaultDeckBoolean(user_id)) {
-
-        }
         try {
 
-        } catch () {
+            Map<String, Integer> userAuthorization = UserAuthorizationMap.getAuthorization();
+            String authorization = request.getHeaderMap().getHeader("Authorization");
+            int user_id = userAuthorization.get(authorization); //should be null if user doesn't exist
+            //cardIds
+            List<String> cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<String>>(){});
 
+            if (cardList.size() != 4) {
+                return new Response(
+                        HttpStatus.BAD_REQUEST,
+                        ContentType.JSON,
+                        "{\"message\" : \"You must choose 4 cards\"}"
+                );
+            }
+            if (this.deckFacade.updateDeck(user_id, cardList)) {
+                return new Response(
+                        HttpStatus.CREATED,
+                        ContentType.JSON,
+                        "{ message: \"Deck changed successfully\" }"
+                );
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+
+            return new Response(
+                    HttpStatus.FORBIDDEN,
+                    ContentType.JSON,
+                    "{\"message\" : \"Access Denied\"}"
+            );
         }
 
-        */
         return new Response(
-                HttpStatus.OK,
+                HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
-                "[]"
+                "{\"message\" : \"Could not edit deck\"}"
         );
     }
     public Response getCardsInUserDeck(Request request) {
@@ -50,8 +68,8 @@ public class DeckController extends Controller {
             int user_id = userAuthorization.get(authorization); //should be null if user doesn't exist
 
 
-            //check if defaultDeck is true
 
+            //check if defaultDeck is true
             if (deckFacade.getDefaultDeckBoolean(user_id)) {
                 List<Card> cardList = this.deckFacade.getDefaultDeck(user_id);
                 String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
@@ -63,8 +81,14 @@ public class DeckController extends Controller {
                 );
             }
 
-
             List<Card> cardList = this.deckFacade.getDeck(user_id);
+            String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
+
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    userCardJSON
+            );
 
         } catch (JsonProcessingException e) {
             System.err.println("JSON processing error");
@@ -82,10 +106,5 @@ public class DeckController extends Controller {
                     "{ \"message\" : \"User is unauthorized\" }"
             );
         }
-        return new Response(
-                HttpStatus.BAD_REQUEST,
-                ContentType.JSON,
-                "{ \"message\" : \"Username not available\" }"
-        );
     }
 }
