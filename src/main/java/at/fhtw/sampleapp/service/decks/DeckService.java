@@ -19,6 +19,8 @@ public class DeckService implements Service{
         try {
             if(request.getMethod() == Method.GET) {
                 return this.deckController.getCardsInUserDeck(request);
+            } else if(request.getMethod() == Method.PUT) {
+                return this.deckController.changeCurrentDeck(request);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

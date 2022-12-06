@@ -17,6 +17,30 @@ public class DeckController extends Controller {
 
     public DeckController(DeckFacade deckFacade) {this.deckFacade = deckFacade;}
 
+    public Response changeCurrentDeck(Request request) {
+
+        Map<String, Integer> userAuthorization = UserAuthorizationMap.getAuthorization();
+        String authorization = request.getHeaderMap().getHeader("Authorization");
+        int user_id = userAuthorization.get(authorization); //should be null if user doesn't exist
+
+        //check if user has already a custom deck
+        /*
+        if (deckFacade.getDefaultDeckBoolean(user_id)) {
+
+        }
+        try {
+
+        } catch () {
+
+        }
+
+        */
+        return new Response(
+                HttpStatus.OK,
+                ContentType.JSON,
+                "[]"
+        );
+    }
     public Response getCardsInUserDeck(Request request) {
         try {
             //ToDo:add Authorization
@@ -27,14 +51,21 @@ public class DeckController extends Controller {
 
 
             //check if defaultDeck is true
-            List<Card> cardList = this.deckFacade.getDefaultDeck(user_id);
-            String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
 
-            return new Response(
-                    HttpStatus.OK,
-                    ContentType.JSON,
-                    userCardJSON
-            );
+            if (deckFacade.getDefaultDeckBoolean(user_id)) {
+                List<Card> cardList = this.deckFacade.getDefaultDeck(user_id);
+                String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
+
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.JSON,
+                        userCardJSON
+                );
+            }
+
+
+            List<Card> cardList = this.deckFacade.getDeck(user_id);
+
         } catch (JsonProcessingException e) {
             System.err.println("JSON processing error");
             e.printStackTrace();
@@ -51,5 +82,10 @@ public class DeckController extends Controller {
                     "{ \"message\" : \"User is unauthorized\" }"
             );
         }
+        return new Response(
+                HttpStatus.BAD_REQUEST,
+                ContentType.JSON,
+                "{ \"message\" : \"Username not available\" }"
+        );
     }
 }

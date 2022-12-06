@@ -56,35 +56,28 @@ public class RepoDecks {
         //return packageCount;
     }
 
-    public List<Card> getDeck(int user_id) {
+    public List<String> getDeck(int user_id) {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     """
-                            SELECT card.card_id, card.card_name, card.card_damage
-                            FROM player_deck_link
-                                 LEFT JOIN card_deck_link
-                                     ON player_deck_link.deck_id = card_deck_link.deck_id
-                                 LEFT JOIN cards
-                                     ON card_package_link.card_id = cards.card_id
-                                                  
-                            WHERE user_id = ?
-                            LIMIT 4 OFFSET 0
-                            """
+                        SELECT card_1_id, card_2_id, card_3_id, card_4_id
+                        FROM decks
+                        WHERE user_id = ?
+                        """
             );
             statement.setInt(1, user_id);
             ResultSet queryResult = statement.executeQuery();
-            List<Card> cardList = new ArrayList<>();
+            List<String> cardIdList = new ArrayList<>();
 
-            while(queryResult.next()) {
-                Card card = new Card(
-                        queryResult.getString(1),
-                        queryResult.getString(2),
-                        queryResult.getInt(3)
-                );
-                cardList.add(card);
+            if(queryResult.next()) {
+               cardIdList.add(queryResult.getString(1));
+               cardIdList.add(queryResult.getString(2));
+               cardIdList.add(queryResult.getString(3));
+               cardIdList.add(queryResult.getString(4));
             }
 
-            return cardList;
+            return cardIdList;
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error in getDeck");

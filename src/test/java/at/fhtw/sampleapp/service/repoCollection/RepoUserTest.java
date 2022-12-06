@@ -20,7 +20,7 @@ class RepoUserTest {
    @Test
     void updateDefaultDeckBoolean() {
        RepoUser repoUser = new RepoUser();
-       repoUser.updateDefaultDeckBoolean(1);
+       repoUser.updateDefaultDeckBoolean(1, false);
 
    }
 }

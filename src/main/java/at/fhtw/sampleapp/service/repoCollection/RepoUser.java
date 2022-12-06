@@ -159,13 +159,41 @@ public class RepoUser {
         return false;
     }
 
-    public boolean updateDefaultDeckBoolean(int user_id) {
+    public boolean getDefaultDeckBoolean(int user_id) {
+
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    """
+                        SELECT user_defaultDeck
+                        FROM players
+                        WHERE user_id = ?
+                        """
+            );
+            statement.setInt(1, user_id);
+            ResultSet resultSet = statement.executeQuery();
+            boolean defaultDeck = false;
+
+            if(resultSet.next()) {
+                defaultDeck = resultSet.getBoolean(1);
+            }
+
+            return defaultDeck;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim ändern des User balance");
+            //ToDo: add Rollback
+        }
+        return false;
+    }
+
+    public boolean updateDefaultDeckBoolean(int user_id, boolean defaultDeckBoolean) {
 
         try {
             PreparedStatement statement = this.connection.prepareStatement(
                     "UPDATE players SET user_defaultdeck=? WHERE user_id=?"
             );
-            statement.setBoolean(1, false);
+            statement.setBoolean(1, defaultDeckBoolean);
             statement.setInt(2, user_id);
             statement.execute();
             return true;
