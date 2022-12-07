@@ -34,9 +34,10 @@ public class RepoPackages {
     public boolean addPackage(int package_id) throws SQLException {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO packages VALUES(?)"
+                    "INSERT INTO packages VALUES(?,?)"
             );
             statement.setInt(1, package_id);
+            statement.setBoolean(2, true);
             statement.execute();
             return true;
 
@@ -66,5 +67,50 @@ public class RepoPackages {
             System.err.println("Fehler: Package konnte nicht gefunden werden");
             return false;
         }
+    }
+
+    public void makePackageUnavailable(int package_id) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                        UPDATE packages
+                        SET package_available = ?
+                        WHERE package_id = ?
+                        """
+            );
+            statement.setBoolean(1, false);
+            statement.setInt(2, package_id);
+            statement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler: Package konnte nicht gefunden werden");
+        }
+    }
+
+    public int getFirstAvailablePackage() {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                        SELECT package_id
+                        FROM packages
+                        WHERE package_available = true
+                        LIMIT 1 OFFSET 0
+                        """
+            );
+            ResultSet resultSet;
+            resultSet = statement.executeQuery();
+
+            if(resultSet.next()) {
+              return resultSet.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler: Package konnte nicht gefunden werden");
+        }
+        return -1;
     }
 }

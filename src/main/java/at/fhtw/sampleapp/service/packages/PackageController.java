@@ -32,7 +32,7 @@ public class PackageController extends Controller{
         try {
             cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<Card>>(){});
 
-            if (this.packageFacade.addPackageDAL(cardList)) {
+            if (this.packageFacade.addPackage(cardList)) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,

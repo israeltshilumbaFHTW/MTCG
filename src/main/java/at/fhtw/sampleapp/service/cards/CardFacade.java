@@ -22,19 +22,16 @@ public class CardFacade {
         RepoCardPackages repoCardPackages = new RepoCardPackages();
         List<String> cardIdList = new ArrayList<>();
         packageIdList.forEach(package_id -> {
-            List<String> queryCardIdList = repoCardPackages.getCardInPackage(1);
+            List<String> queryCardIdList = repoCardPackages.getCardInPackage(package_id);
             //add each card_id to cardList
-            queryCardIdList.forEach(card_id -> {
-                cardIdList.add(card_id);
-            });
+            queryCardIdList.forEach(card_id -> cardIdList.add(card_id));
         });
 
         //ToDo: get Cards
         RepoCard repoCard = new RepoCard();
+
         List<Card> cardList = new ArrayList<>();
-        cardIdList.forEach(card_id -> {
-            cardList.add(repoCard.getCard(card_id));
-        });
+        cardIdList.forEach(card_id -> cardList.add(repoCard.getCard(card_id)));
 
         return cardList;
     }

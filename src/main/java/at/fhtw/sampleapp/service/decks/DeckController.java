@@ -4,6 +4,8 @@ import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
+import at.fhtw.sampleapp.CustomExceptions.CardNotOwnedException;
+import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
@@ -50,6 +52,14 @@ public class DeckController extends Controller {
                     HttpStatus.FORBIDDEN,
                     ContentType.JSON,
                     "{\"message\" : \"Access Denied\"}"
+            );
+        } catch (CardNotOwnedException e) {
+            e.printStackTrace();
+
+            return new Response(
+                    HttpStatus.UNAUTHORIZED,
+                    ContentType.JSON,
+                    "{ \"message\" : \"Card Not Owned\" }"
             );
         }
 

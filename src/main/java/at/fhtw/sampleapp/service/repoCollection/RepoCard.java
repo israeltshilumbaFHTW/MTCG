@@ -1,5 +1,6 @@
 package at.fhtw.sampleapp.service.repoCollection;
 
+import at.fhtw.sampleapp.CustomExceptions.CardNotOwnedException;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.DatabaseConnection;
 
@@ -49,7 +50,7 @@ public class RepoCard {
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Fehler: Get Card failed");
-            return new Card(); //return empty card
+            return new Card();
         }
         return new Card();
     }

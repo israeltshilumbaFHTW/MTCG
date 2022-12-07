@@ -15,7 +15,7 @@ public class PackageFacade {
 
     }
 
-    public boolean addPackageDAL(List<Card> cardList){
+    public boolean addPackage(List<Card> cardList){
         //add Cards to DB
         RepoCard cardRequest = new RepoCard();
         RepoPackages packageRequest = new RepoPackages();
@@ -23,7 +23,7 @@ public class PackageFacade {
         AtomicBoolean success = new AtomicBoolean(false); //automatisches update
         try {
 
-            //ToDo: check package Count
+            //ToDo: Add Package and check package Count
             int package_count = packageRequest.getPackageCount();
             success.set(packageRequest.addPackage(package_count + 1));
             //ToDo: insert id into package table

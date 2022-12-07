@@ -1,17 +1,18 @@
 package at.fhtw.sampleapp.service.transaction;
 
+import at.fhtw.sampleapp.CustomExceptions.PackageNotAvailableException;
+import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.service.repoCollection.RepoPackages;
 import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserPackages;
-
-import java.util.List;
+import at.fhtw.sampleapp.CustomExceptions.NotEnoughMoneyException;
 
 public class TransactionFacade {
 
     public TransactionFacade() {
     }
 
-    public boolean buyPackage(int user_id) {
+    public boolean buyPackage(int user_id) throws NotEnoughMoneyException, PackageNotAvailableException, UnexpectedErrorException {
         //check if user has enough money
         RepoUserPackages repoUserPackages = new RepoUserPackages();
         RepoUser repoUser = new RepoUser();
@@ -21,31 +22,23 @@ public class TransactionFacade {
 
         int balance = repoUser.getUserBalance(user_id);
         if (balance < 5) {
-            return false;
+            throw new NotEnoughMoneyException("Not Enough Money");
         }
 
-        //check if package the with the lowest id is owned
-        List<Integer> packageIdList = repoUserPackages.getUserPackages(user_id);
-        while (true) {
-            if (packageIdList.contains(lowestUnownedPackageId)) { //package already owned
-                lowestUnownedPackageId = lowestUnownedPackageId + 1;
-            } else {
-                break;
-            }
+        int availablePackageId = repoPackages.getFirstAvailablePackage();
+        if (availablePackageId == -1) {
+            throw new PackageNotAvailableException("Package not available");
         }
-        //check if package exists
-        if (!repoPackages.getPackage(lowestUnownedPackageId)) {
-           return false;
+        //add Package
+        if(!repoUserPackages.addUserPackage(availablePackageId, user_id)){
+           throw new UnexpectedErrorException("Unexpected Error: Couldn't get Package");
         }
-        //add player and package to player_package_link
-        if(!repoUserPackages.addUserPackage(lowestUnownedPackageId, user_id)){
-            return false;
-        }
-
+        //make Package unavailable
+        repoPackages.makePackageUnavailable(availablePackageId);
         //reduce player money
         balance = balance - 5;
         if(!repoUser.updateUserBalance(user_id, balance)){
-            return false;
+            throw new UnexpectedErrorException("Error in Database");
         }
 
         return true;
