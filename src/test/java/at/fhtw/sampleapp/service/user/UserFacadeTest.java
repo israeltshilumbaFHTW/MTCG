@@ -11,8 +11,8 @@ class UserFacadeTest {
     void createDuplicateUser_DAL() {
         UserFacade userFacade = new UserFacade();
         //create user that already exists
-        assertEquals(true, userFacade.createUser_DAL("herbert", "schneckerl"));
-        assertEquals(false, userFacade.createUser_DAL("herbert", "schneckerl"));
+        assertEquals(true, userFacade.createUser("herbert", "schneckerl"));
+        assertEquals(false, userFacade.createUser("herbert", "schneckerl"));
     }
 
     @Test
@@ -20,10 +20,10 @@ class UserFacadeTest {
         UserFacade userFacade = new UserFacade();
         //get herbert with name
         User user = new User(1, "herbert", "schneckerl", 1000, 20, true );
-        User queryName = userFacade.getUser_DAL("herbert");
+        User queryName = userFacade.getUser("herbert");
         assertEquals(queryName.getUser_id(), user.getUser_id());
         //get herbert with id
-        User queryId = userFacade.getUser_DAL(1);
+        User queryId = userFacade.getUser(1);
         assertEquals(queryId.getUser_id(), user.getUser_id());
     }
 

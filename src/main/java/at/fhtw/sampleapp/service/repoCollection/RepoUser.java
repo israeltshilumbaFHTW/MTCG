@@ -15,7 +15,7 @@ import java.util.List;
 public class RepoUser {
     private Connection connection = DatabaseConnection.getDatabaseConnection();
 
-
+    //GET REQUESTS
     public User getUser(int user_id) {
         User user = null;
         try {
@@ -33,7 +33,10 @@ public class RepoUser {
                         queryResult.getString(3),
                         queryResult.getInt(4),
                         queryResult.getInt(5),
-                        queryResult.getBoolean(6)
+                        queryResult.getBoolean(6),
+                        queryResult.getString(7),
+                        queryResult.getString(8),
+                        queryResult.getString(9)
                 );
             }
         } catch (SQLException e) {
@@ -51,7 +54,7 @@ public class RepoUser {
         try {
 
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM players WHERE user_name=?"
+                    "SELECT * FROM players WHERE user_username=?"
             );
 
             statement.setString(1, user_name);
@@ -90,7 +93,10 @@ public class RepoUser {
                         queryResult.getString(3),
                         queryResult.getInt(4),
                         queryResult.getInt(5),
-                        queryResult.getBoolean(6)
+                        queryResult.getBoolean(6),
+                        queryResult.getString(7),
+                        queryResult.getString(8),
+                        queryResult.getString(9)
                 );
                 userList.add(user);
             }
@@ -99,27 +105,6 @@ public class RepoUser {
         }
         return userList;
     }
-
-    public boolean postUser(String user_name, String user_password, int user_elo, int user_money, boolean defaultDeck) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?,?)"
-            );
-            statement.setString(1, user_name);
-            statement.setString(2, user_password);
-            statement.setInt(3, user_elo);
-            statement.setInt(4, user_money);
-            statement.setBoolean(5, defaultDeck);
-            statement.execute();
-            return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Fehler beim Einfügen eines Users");
-        }
-        return false;
-    }
-
 
     public int getUserBalance(int user_id) {
         try {
@@ -141,23 +126,6 @@ public class RepoUser {
         return 0;
     }
 
-    public boolean updateUserBalance(int user_id, int user_money) {
-        try {
-            PreparedStatement statement = this.connection.prepareStatement(
-                    "UPDATE players SET user_money=? WHERE user_id=?"
-            );
-            statement.setInt(1, user_money);
-            statement.setInt(2, user_id);
-            statement.execute();
-            return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Fehler beim ändern des User balance");
-            //ToDo: add Rollback
-        }
-        return false;
-    }
 
     public boolean getDefaultDeckBoolean(int user_id) {
 
@@ -186,6 +154,106 @@ public class RepoUser {
         }
         return false;
     }
+
+    //UPDATE REQUESTS
+    public boolean updateUserBalance(int user_id, int user_money) {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE players SET user_money=? WHERE user_id=?"
+            );
+            statement.setInt(1, user_money);
+            statement.setInt(2, user_id);
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim ändern des User balance");
+            //ToDo: add Rollback
+        }
+        return false;
+    }
+    public boolean updateName(int user_id, String user_name) {
+
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE players SET user_name=? WHERE user_id=?"
+            );
+            statement.setString(1, user_name);
+            statement.setInt(2, user_id);
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Update Name error");
+            //ToDo: add Rollback
+        }
+        return false;
+    }
+
+    public boolean updateImage(int user_id, String user_image) {
+
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE players SET user_image=? WHERE user_id=?"
+            );
+            statement.setString(1, user_image);
+            statement.setInt(2, user_id);
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Update Name error");
+            //ToDo: add Rollback
+        }
+        return false;
+    }
+    public boolean updateBio(int user_id, String user_bio) {
+
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE players SET user_bio=? WHERE user_id=?"
+            );
+            statement.setString(1, user_bio);
+            statement.setInt(2, user_id);
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Update Name error");
+            //ToDo: add Rollback
+        }
+        return false;
+    }
+    //POST REQUEST
+    public boolean postUser(String user_username, String user_password, int user_elo, int user_money, boolean defaultDeck) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?,?,?,?,?)"
+            );
+            statement.setString(1, user_username);
+            statement.setString(2, user_password);
+            statement.setInt(3, user_elo);
+            statement.setInt(4, user_money);
+            statement.setBoolean(5, defaultDeck);
+            statement.setString(6, "bio");
+            statement.setString(7, "image");
+            statement.setString(8, "name");
+
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Fehler beim Einfügen eines Users");
+        }
+        return false;
+    }
+
+
 
     public boolean updateDefaultDeckBoolean(int user_id, boolean defaultDeckBoolean) {
 

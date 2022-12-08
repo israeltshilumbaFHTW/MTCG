@@ -41,7 +41,7 @@ public class DeckController extends Controller {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
-                        "{ message: \"Deck changed successfully\" }"
+                        "{ \"message\": \"Deck changed successfully\" }"
                 );
             }
         } catch (JsonProcessingException e) {

@@ -45,7 +45,7 @@ public class UserTest {
         try {
             User user = new ObjectMapper().readValue(bufferedReader.readLine(), User.class);
             assertEquals(1, user.getUser_id());
-            assertEquals("kienboec", user.getUser_name());
+            assertEquals("kienboec", user.getUser_username());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

@@ -19,11 +19,11 @@ public class SessionController extends Controller{
         try {
             User user = this.getObjectMapper().readValue(request.getBody(), User.class);
 
-            if (this.sessionFacade.userLoginDAL(user.getUser_name(), user.getUser_password())) {
+            if (this.sessionFacade.userLoginDAL(user.getUser_username(), user.getUser_password())) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
-                        "{ message: \"Login successful\" }"
+                        "{ \"message\": \"Login successful\" }"
                 );
             }
         } catch (JsonProcessingException e) {

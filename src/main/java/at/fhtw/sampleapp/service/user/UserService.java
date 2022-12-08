@@ -21,13 +21,16 @@ public class UserService implements Service {
             if (request.getMethod() == Method.GET &&
                     request.getPathParts().size() > 1) {
                 //successful database query
-                return this.userController.getUser(request.getPathParts().get(1));
+                System.out.println("GET user/username");
+                return this.userController.getUser(request);
             } else if (request.getMethod() == Method.GET) {
-                return this.userController.getUser();
+                return this.userController.getUsers();
             } else if (request.getMethod() == Method.POST) {
 
                 //TODO: Post Method
                     return this.userController.postUser(request);
+            } else if (request.getMethod() == Method.PUT) {
+                return this.userController.updateUser(request);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

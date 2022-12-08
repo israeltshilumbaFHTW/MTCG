@@ -1,5 +1,6 @@
 package at.fhtw.sampleapp.service.user;
 
+import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.model.User;
 import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 
@@ -12,7 +13,7 @@ public class UserFacade {
         //remove sampleData
     }
 
-    public List<User> getAllUsers_DAL() {
+    public List<User> getAllUsers() {
         List<User> userList = null; //ToDo: null entfernen, nicht die eleganteste Lösung
         RepoUser userRequest = new RepoUser();
 
@@ -20,15 +21,12 @@ public class UserFacade {
         return userList;
     }
 
-    public User getUser_DAL(int user_id) {
-        User user = null;
+    public User getUser(int user_id) {
         RepoUser userRequest = new RepoUser();
-
-        user = userRequest.getUser(user_id);
-        return user;
+        return userRequest.getUser(user_id);
     }
 
-    public User getUser_DAL(String user_name) {
+    public User getUser(String user_name) {
         User user = null;
         RepoUser userRequest = new RepoUser();
 
@@ -36,18 +34,45 @@ public class UserFacade {
         return user;
     }
 
-    public boolean createUser_DAL(String user_name, String user_password) {
+    public boolean createUser(String user_username, String user_password) {
+
         final int defaultElo = 1000;
         final int defaultMoney = 20;
         final boolean defaultDeck = true;
         //check if username is already in use
         RepoUser userRequest = new RepoUser();
         boolean success = false;
-        if (userRequest.getUser(user_name) == null) { //user_name nicht vergeben
-            success = userRequest.postUser(user_name, user_password, defaultElo, defaultMoney, defaultDeck);
+        if (userRequest.getUser(user_username) == null) { //user_name nicht vergeben
+            success = userRequest.postUser(user_username, user_password, defaultElo, defaultMoney, defaultDeck);
         }
         return success;
     }
 
+    public boolean updateUser(User user, int user_id) throws UnexpectedErrorException {
+        //entries that aren't null will be updated
 
+        RepoUser repoUser = new RepoUser();
+        boolean success;
+
+        if(user.getUser_name() != null) {
+            success = repoUser.updateName(user_id, user.getUser_name());
+            if(!success) {
+                throw new UnexpectedErrorException("Unexpected Error. Update Failed");
+            }
+        }
+        if(user.getUser_bio() != null) {
+            success = repoUser.updateBio(user_id, user.getUser_bio());
+            if(!success) {
+                throw new UnexpectedErrorException("Unexpected Error. Update Failed");
+            }
+        }
+        if(user.getUser_image() != null) {
+            success = repoUser.updateImage(user_id, user.getUser_image());
+            if(!success) {
+                throw new UnexpectedErrorException("Unexpected Error. Update Failed");
+            }
+        }
+
+        return true;
+    }
 }

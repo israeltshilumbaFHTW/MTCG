@@ -36,7 +36,7 @@ public class PackageController extends Controller{
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
-                        "{ message: \"Package added successfully\" }"
+                        "{ \"message\": \"Package added successfully\" }"
                 );
             }
         } catch (JsonProcessingException e) {

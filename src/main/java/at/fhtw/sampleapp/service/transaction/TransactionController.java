@@ -30,7 +30,7 @@ public class TransactionController extends Controller {
                     return new Response(
                             HttpStatus.CREATED,
                             ContentType.JSON,
-                            "{ message: \"Package purchased successfully\" }"
+                            "{ \"message\": \"Package purchased successfully\" }"
                     );
                 } else {
                     return new Response(
