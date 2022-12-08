@@ -6,7 +6,9 @@ public class Stats {
     private int stats_losses;
     private String user_name;
 
-    public Stats(int stats_elo, int stats_wins, int stats_losses, String user_name) {
+    public Stats(){}
+
+    public Stats(String user_name, int stats_elo, int stats_wins, int stats_losses) {
         this.stats_elo = stats_elo;
         this.stats_losses = stats_losses;
         this.stats_wins = stats_wins;

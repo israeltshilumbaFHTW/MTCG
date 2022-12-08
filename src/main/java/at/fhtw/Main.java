@@ -7,7 +7,9 @@ import at.fhtw.sampleapp.service.cards.CardService;
 import at.fhtw.sampleapp.service.decks.DeckService;
 import at.fhtw.sampleapp.service.echo.EchoService;
 import at.fhtw.sampleapp.service.packages.PackageService;
+import at.fhtw.sampleapp.service.scoreboard.ScoreboardService;
 import at.fhtw.sampleapp.service.session.SessionService;
+import at.fhtw.sampleapp.service.stats.StatsService;
 import at.fhtw.sampleapp.service.transaction.TransactionService;
 import at.fhtw.sampleapp.service.user.UserService;
 import at.fhtw.sampleapp.service.weather.WeatherService;
@@ -45,6 +47,8 @@ public class Main {
         router.addService("/transactions", new TransactionService());
         router.addService("/cards", new CardService());
         router.addService("/deck", new DeckService());
+        router.addService("/stats", new StatsService());
+        router.addService("/score", new ScoreboardService());
         return router;
     }
 }
