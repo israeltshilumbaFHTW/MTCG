@@ -117,7 +117,7 @@ public class UserController extends Controller {
         try {
             User user = this.getObjectMapper().readValue(request.getBody(), User.class);
 
-            if (this.userFacade.createUser(user.getUser_username(), user.getUser_password())) {
+            if (this.userFacade.addUser(user.getUser_username(), user.getUser_password())) {
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,

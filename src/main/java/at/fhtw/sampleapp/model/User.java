@@ -16,7 +16,6 @@ public class User {
     private String user_bio;
     @JsonAlias({"Image"})
     private String user_image;
-    private int user_elo;
 
     public User() {
     }
@@ -26,11 +25,10 @@ public class User {
         this.user_password = user_password;
     }
 
-    public User(int user_id, String user_username, String user_password, int user_elo, int user_money, boolean defaultDeck, String user_bio, String user_image, String user_name) {
+    public User(int user_id, String user_username, String user_password, int user_money, boolean defaultDeck, String user_bio, String user_image, String user_name) {
         this.user_id = user_id;
         this.user_username = user_username;
         this.user_password = user_password;
-        this.user_elo = user_elo;
         this.user_money = user_money;
         this.defaultDeck = defaultDeck;
         this.user_bio = user_bio;
@@ -38,11 +36,10 @@ public class User {
         this.user_name = user_name;
     }
 
-    public User(int user_id, String user_username, String user_password, int user_elo, int user_money, boolean defaultDeck) {
+    public User(int user_id, String user_username, String user_password, int user_money, boolean defaultDeck) {
         this.user_id = user_id;
         this.user_username = user_username;
         this.user_password = user_password;
-        this.user_elo = user_elo;
         this.user_money = user_money;
         this.defaultDeck = defaultDeck;
     }
@@ -110,13 +107,5 @@ public class User {
 
     public void setUser_image(String user_image) {
         this.user_image = user_image;
-    }
-
-    public int getUser_elo() {
-        return user_elo;
-    }
-
-    public void setUser_elo(int user_elo) {
-        this.user_elo = user_elo;
     }
 }

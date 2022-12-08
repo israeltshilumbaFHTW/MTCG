@@ -32,11 +32,10 @@ public class RepoUser {
                         queryResult.getString(2),
                         queryResult.getString(3),
                         queryResult.getInt(4),
-                        queryResult.getInt(5),
-                        queryResult.getBoolean(6),
+                        queryResult.getBoolean(5),
+                        queryResult.getString(6),
                         queryResult.getString(7),
-                        queryResult.getString(8),
-                        queryResult.getString(9)
+                        queryResult.getString(8)
                 );
             }
         } catch (SQLException e) {
@@ -65,8 +64,7 @@ public class RepoUser {
                         queryResult.getString(2),
                         queryResult.getString(3),
                         queryResult.getInt(4),
-                        queryResult.getInt(5),
-                        queryResult.getBoolean(6)
+                        queryResult.getBoolean(5)
                 );
             }
         } catch (SQLException e) {
@@ -92,11 +90,10 @@ public class RepoUser {
                         queryResult.getString(2),
                         queryResult.getString(3),
                         queryResult.getInt(4),
-                        queryResult.getInt(5),
-                        queryResult.getBoolean(6),
+                        queryResult.getBoolean(5),
+                        queryResult.getString(6),
                         queryResult.getString(7),
-                        queryResult.getString(8),
-                        queryResult.getString(9)
+                        queryResult.getString(8)
                 );
                 userList.add(user);
             }
@@ -229,19 +226,18 @@ public class RepoUser {
         return false;
     }
     //POST REQUEST
-    public boolean postUser(String user_username, String user_password, int user_elo, int user_money, boolean defaultDeck) {
+    public boolean postUser(String user_username, String user_password, int user_money, boolean defaultDeck) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?,?,?,?,?)"
+                    "INSERT INTO players VALUES(DEFAULT,?,?,?,?,?,?,?)"
             );
             statement.setString(1, user_username);
             statement.setString(2, user_password);
-            statement.setInt(3, user_elo);
-            statement.setInt(4, user_money);
-            statement.setBoolean(5, defaultDeck);
-            statement.setString(6, "bio");
-            statement.setString(7, "image");
-            statement.setString(8, "name");
+            statement.setInt(3, user_money);
+            statement.setBoolean(4, defaultDeck);
+            statement.setString(5, "bio");
+            statement.setString(6, "image");
+            statement.setString(7, "name");
 
             statement.execute();
             return true;

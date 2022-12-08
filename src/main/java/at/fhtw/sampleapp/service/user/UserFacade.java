@@ -2,6 +2,7 @@ package at.fhtw.sampleapp.service.user;
 
 import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.model.User;
+import at.fhtw.sampleapp.service.repoCollection.RepoStats;
 import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 
 import java.util.List;
@@ -34,17 +35,39 @@ public class UserFacade {
         return user;
     }
 
-    public boolean createUser(String user_username, String user_password) {
+    public boolean addUser(String user_username, String user_password) {
 
-        final int defaultElo = 1000;
         final int defaultMoney = 20;
         final boolean defaultDeck = true;
         //check if username is already in use
-        RepoUser userRequest = new RepoUser();
+        RepoUser repoUser = new RepoUser();
         boolean success = false;
-        if (userRequest.getUser(user_username) == null) { //user_name nicht vergeben
-            success = userRequest.postUser(user_username, user_password, defaultElo, defaultMoney, defaultDeck);
+        if (repoUser.getUser(user_username) == null) { //user_name nicht vergeben
+            success = repoUser.postUser(user_username, user_password, defaultMoney, defaultDeck);
         }
+
+        if(!success) {
+            //throw some Exception
+        }
+
+        //add into stats table default values
+        User user = repoUser.getUser(user_username);
+        RepoStats repoStats = new RepoStats();
+
+        int defaultElo = 1000;
+        int defaultWins = 0;
+        int defaultLosses = 0;
+        String username;
+
+        if(user.getUser_name() == null) {
+            username = user.getUser_username();
+        } else {
+            username = user.getUser_name();
+        }
+
+        success = repoStats.addDefaultStats(defaultElo, defaultWins, defaultLosses, username, user.getUser_id());
+
+
         return success;
     }
 
