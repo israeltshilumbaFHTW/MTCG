@@ -25,14 +25,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-/*
-        //Todo: elegantere Lösung finden
-        try {
-            DbInit dbInit = new DbInit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
- */
     }
 
     private static Router configureRouter()

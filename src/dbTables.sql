@@ -6,16 +6,19 @@ DROP TABLE IF EXISTS packages;
 DROP TABLE IF EXISTS cards;
 DROP TABLE IF EXISTS stacks;
 DROP TABLE IF EXISTS decks;
+DROP TABLE IF EXISTS stats;
 DROP TABLE IF EXISTS players;
 
 CREATE TABLE players
 (
     user_id          SERIAL,
-    user_name        varchar(255) NOT NULL,
+    user_username    varchar(255) NOT NULL,
     user_password    varchar(255) NOT NULL,
-    user_elo         int          NOT NULL,
     user_money       int          NOT NULL,
     user_defaultDeck boolean      NOT NULL,
+    user_bio         varchar(255),
+    user_image       varchar(255),
+    user_name        varchar(255),
 
     PRIMARY KEY (user_id)
 );
@@ -34,8 +37,8 @@ CREATE TABLE stacks
 
 CREATE TABLE decks
 (
-    deck_id SERIAL,
-    user_id int NOT NULL,
+    deck_id   SERIAL,
+    user_id   int NOT NULL,
     card_1_id varchar(255),
     card_2_id varchar(255),
     card_3_id varchar(255),
@@ -60,7 +63,9 @@ CREATE TABLE cards
 
 CREATE TABLE packages
 (
-    package_id int NOT NULL,
+    package_id        int     NOT NULL,
+    --jedes Package existiert nur einmail
+    package_available boolean NOT NULL,
     PRIMARY KEY (package_id)
 );
 
@@ -128,5 +133,12 @@ CREATE TABLE player_package_link
             ON DELETE CASCADE
 );
 
-
---user Card tabelle
+CREATE TABLE stats
+(
+    stat_id SERIAL,
+    user_id int NOT NULL,
+    user_name varchar(255),
+    user_elo int NOT NULL,
+    user_wins int NOT NULL,
+    user_losses int NOT NULL
+);
