@@ -18,8 +18,8 @@ public class RepoDecks {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     """
-                        INSERT INTO decks VALUES(DEFAULT,?,?,?,?,?)
-                        """
+                            INSERT INTO decks VALUES(DEFAULT,?,?,?,?,?)
+                            """
             );
 
 
@@ -43,10 +43,10 @@ public class RepoDecks {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     """
-                        UPDATE decks
-                        SET card_1_id = ?, card_2_id = ?, card_3_id = ?, card_4_id = ?
-                        WHERE user_id = ?
-                        """
+                            UPDATE decks
+                            SET card_1_id = ?, card_2_id = ?, card_3_id = ?, card_4_id = ?
+                            WHERE user_id = ?
+                            """
             );
 
             statement.setString(1, card_1_id);
@@ -64,6 +64,7 @@ public class RepoDecks {
         }
         return false;
     }
+
     public int getDeckCount() {
         int deckCount = 0;
         try {
@@ -89,20 +90,20 @@ public class RepoDecks {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     """
-                        SELECT card_1_id, card_2_id, card_3_id, card_4_id
-                        FROM decks
-                        WHERE user_id = ?
-                        """
+                            SELECT card_1_id, card_2_id, card_3_id, card_4_id
+                            FROM decks
+                            WHERE user_id = ?
+                            """
             );
             statement.setInt(1, user_id);
             ResultSet queryResult = statement.executeQuery();
             List<String> cardIdList = new ArrayList<>();
 
-            if(queryResult.next()) {
-               cardIdList.add(queryResult.getString(1));
-               cardIdList.add(queryResult.getString(2));
-               cardIdList.add(queryResult.getString(3));
-               cardIdList.add(queryResult.getString(4));
+            if (queryResult.next()) {
+                cardIdList.add(queryResult.getString(1));
+                cardIdList.add(queryResult.getString(2));
+                cardIdList.add(queryResult.getString(3));
+                cardIdList.add(queryResult.getString(4));
             }
 
             return cardIdList;
@@ -112,5 +113,29 @@ public class RepoDecks {
             System.err.println("Error in getDeck");
         }
         return new ArrayList<>();
+    }
+
+    public int getDeckIdWithUserId(int user_id) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                            SELECT deck_id
+                            FROM decks
+                            WHERE user_id = ?
+                            """
+            );
+            statement.setInt(1, user_id);
+            ResultSet queryResult;
+            queryResult = statement.executeQuery();
+
+            if (queryResult.next()) {
+                return  queryResult.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error in getDeckWithUserId");
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

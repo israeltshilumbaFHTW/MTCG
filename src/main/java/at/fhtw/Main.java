@@ -2,7 +2,7 @@ package at.fhtw;
 
 import at.fhtw.httpserver.utils.Router;
 import at.fhtw.httpserver.server.Server;
-import at.fhtw.sampleapp.db.DbInit;
+import at.fhtw.sampleapp.service.batlle.BattleService;
 import at.fhtw.sampleapp.service.cards.CardService;
 import at.fhtw.sampleapp.service.decks.DeckService;
 import at.fhtw.sampleapp.service.echo.EchoService;
@@ -15,7 +15,6 @@ import at.fhtw.sampleapp.service.user.UserService;
 import at.fhtw.sampleapp.service.weather.WeatherService;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
@@ -41,6 +40,7 @@ public class Main {
         router.addService("/deck", new DeckService());
         router.addService("/stats", new StatsService());
         router.addService("/score", new ScoreboardService());
+        router.addService("/battle", new BattleService());
         return router;
     }
 }
