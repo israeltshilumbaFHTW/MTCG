@@ -1,15 +1,14 @@
 package at.fhtw.sampleapp.service.repoCollection;
 
-import at.fhtw.sampleapp.model.Waiting;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class RepoBattleTest implements Runnable{
+class RepoWaitingTest implements Runnable{
 
     @Test
     public void isWaiting() {
-        RepoBattle repoBattle = new RepoBattle();
+        RepoWaiting repoWaiting = new RepoWaiting();
 
     }
 

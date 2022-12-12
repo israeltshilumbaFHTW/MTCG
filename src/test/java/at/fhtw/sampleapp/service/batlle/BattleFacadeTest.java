@@ -1,7 +1,7 @@
 package at.fhtw.sampleapp.service.batlle;
 
 import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
-import at.fhtw.sampleapp.service.repoCollection.RepoBattle;
+import at.fhtw.sampleapp.service.repoCollection.RepoWaiting;
 import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +16,13 @@ class BattleFacadeTest {
         RepoDecks repoDecks = new RepoDecks();
         int deck_id = repoDecks.getDeckIdWithUserId(userAlreadyWaiting_id);
 
-        RepoBattle repoBattle = new RepoBattle();
-        repoBattle.addToWaitingRoom(2, deck_id);
+        RepoWaiting repoWaiting = new RepoWaiting();
+        repoWaiting.addToWaitingRoom(2, deck_id);
 
         BattleFacade battleFacade = new BattleFacade();
-        String message = battleFacade.initBattle(user_id);
+        int message = battleFacade.initBattle(user_id);
 
-        assertEquals("SECOND PLAYER FOUND A PLAYER ALREADY WAITING", message);
+        assertEquals(1, message);
 
     }
 
@@ -30,7 +30,7 @@ class BattleFacadeTest {
     void initBattleWhenNooneIsWaiting() throws WaitTimeoutException {
         final int user_id = 1;
         BattleFacade battleFacade = new BattleFacade();
-        String message = battleFacade.initBattle(user_id);
+        int message = battleFacade.initBattle(user_id);
 
         assertEquals("NO OPPONENT AVAILABLE", message);
     }

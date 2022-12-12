@@ -10,11 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepoBattle {
+public class RepoWaiting {
 
     private final Connection connection = DatabaseConnection.getDatabaseConnection();
 
-    public List<Waiting> waitingPlayer() {
+    public List<Waiting> getWaitingPlayers() {
         try {
             PreparedStatement statement = connection.prepareStatement(
                    """
