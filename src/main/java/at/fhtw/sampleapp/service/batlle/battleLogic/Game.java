@@ -14,10 +14,10 @@ public class Game {
         this.player2 = playerList.get(1);
     }
 
-    public synchronized int start()  {
+    public synchronized String start()  {
         //check if battle has already taken place
-        Random random = new Random();
-        int randomNumber = random.nextInt();
-        return randomNumber;
+        String winner = "player 1";
+
+        return winner;
     }
 }
