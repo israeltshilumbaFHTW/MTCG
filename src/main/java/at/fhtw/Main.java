@@ -2,7 +2,7 @@ package at.fhtw;
 
 import at.fhtw.httpserver.utils.Router;
 import at.fhtw.httpserver.server.Server;
-import at.fhtw.sampleapp.service.batlle.BattleService;
+import at.fhtw.sampleapp.service.batlles.BattleService;
 import at.fhtw.sampleapp.service.cards.CardService;
 import at.fhtw.sampleapp.service.decks.DeckService;
 import at.fhtw.sampleapp.service.echo.EchoService;

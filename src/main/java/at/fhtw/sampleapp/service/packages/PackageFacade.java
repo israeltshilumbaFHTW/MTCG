@@ -15,7 +15,7 @@ public class PackageFacade {
 
     }
 
-    public boolean addPackage(List<Card> cardList){
+    public boolean addPackage(List<Card> cardList) {
         //add Cards to DB
         RepoCard cardRequest = new RepoCard();
         RepoPackages packageRequest = new RepoPackages();
@@ -28,20 +28,26 @@ public class PackageFacade {
             success.set(packageRequest.addPackage(package_count + 1));
             //ToDo: insert id into package table
             cardList.forEach(
-                card -> {
+                    card -> {
                         try {
                             //ToDo: check if card already exists
-                            success.set(cardRequest.addCard(
-                                    card.getCard_id(),
-                                    card.getCard_name(),
-                                    card.getCard_damage()));
+                            success.set(
+                                    cardRequest.addCard(
+                                        card.getCard_id(),
+                                        card.getCard_name(),
+                                        card.getCard_damage(),
+                                        card.getCard_class(),
+                                        card.getCard_type(),
+                                        card.getCard_element()
+                                    )
+                            );
                             //ToDo: insert package_id and card_id into intermediate table
                             success.set(cardPackagesRequest.addCardPackageId(card.getCard_id(), package_count + 1));
                         } catch (SQLException e) {
                             System.err.println("Fehler beim einfügen von Packages DAL");
                             throw new RuntimeException(e); //necessary because of AtomicBoolean
                         }
-                }
+                    }
 
             );
         } catch (SQLException e) {

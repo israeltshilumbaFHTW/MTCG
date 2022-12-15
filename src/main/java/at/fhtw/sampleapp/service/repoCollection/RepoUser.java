@@ -129,16 +129,16 @@ public class RepoUser {
         try {
             PreparedStatement statement = this.connection.prepareStatement(
                     """
-                        SELECT user_defaultDeck
-                        FROM players
-                        WHERE user_id = ?
-                        """
+                            SELECT user_defaultDeck
+                            FROM players
+                            WHERE user_id = ?
+                            """
             );
             statement.setInt(1, user_id);
             ResultSet resultSet = statement.executeQuery();
             boolean defaultDeck = false;
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 defaultDeck = resultSet.getBoolean(1);
             }
 
@@ -170,6 +170,7 @@ public class RepoUser {
         }
         return false;
     }
+
     public boolean updateName(int user_id, String user_name) {
 
         try {
@@ -207,6 +208,7 @@ public class RepoUser {
         }
         return false;
     }
+
     public boolean updateBio(int user_id, String user_bio) {
 
         try {
@@ -225,6 +227,7 @@ public class RepoUser {
         }
         return false;
     }
+
     //POST REQUEST
     public boolean postUser(String user_username, String user_password, int user_money, boolean defaultDeck) {
         try {
@@ -250,7 +253,6 @@ public class RepoUser {
     }
 
 
-
     public boolean updateDefaultDeckBoolean(int user_id, boolean defaultDeckBoolean) {
 
         try {
@@ -274,33 +276,36 @@ public class RepoUser {
         try {
             PreparedStatement statement = this.connection.prepareStatement(
                     """ 
-                        SELECT cards.card_id, cards.card_name, cards.card_damage
-                        FROM player_package_link
-                            LEFT JOIN card_package_link
-                                ON player_package_link.package_id = card_package_link.package_id
-                            LEFT JOIN cards
-                                ON card_package_link.card_id = cards.card_id
-                        WHERE user_id = ?
-                        ORDER BY card_damage DESC
-                        LIMIT 4 OFFSET 0
-                        """
+                            SELECT cards.card_id, cards.card_name, cards.card_damage, cards.card_class, cards.card_type, cards.card_element
+                            FROM player_package_link
+                                LEFT JOIN card_package_link
+                                    ON player_package_link.package_id = card_package_link.package_id
+                                LEFT JOIN cards
+                                    ON card_package_link.card_id = cards.card_id
+                            WHERE user_id = ?
+                            ORDER BY card_damage DESC
+                            LIMIT 4 OFFSET 0
+                            """
             );
 
-           statement.setInt(1, user_id);
-           ResultSet queryResult = statement.executeQuery();
+            statement.setInt(1, user_id);
+            ResultSet queryResult = statement.executeQuery();
 
-           List<Card> cardList = new ArrayList<>();
+            List<Card> cardList = new ArrayList<>();
 
-           while(queryResult.next()) {
-               Card card = new Card(
-                           queryResult.getString(1),
-                           queryResult.getString(2),
-                           queryResult.getInt(3)
-               );
-               cardList.add(card);
-           }
+            while (queryResult.next()) {
+                Card card = new Card(
+                        queryResult.getString(1),
+                        queryResult.getString(2),
+                        queryResult.getInt(3),
+                        queryResult.getString(4),
+                        queryResult.getString(5),
+                        queryResult.getString(6)
+                        );
+                cardList.add(card);
+            }
 
-           return cardList;
+            return cardList;
 
         } catch (SQLException e) {
             e.printStackTrace();

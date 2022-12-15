@@ -1,4 +1,4 @@
-package at.fhtw.sampleapp.service.batlle;
+package at.fhtw.sampleapp.service.batlles;
 
 import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
 import at.fhtw.sampleapp.service.repoCollection.RepoWaiting;

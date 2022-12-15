@@ -1,11 +1,10 @@
-package at.fhtw.sampleapp.service.batlle;
+package at.fhtw.sampleapp.service.batlles;
 
 import at.fhtw.sampleapp.CustomExceptions.PlayerAlreadyInQueueException;
 import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
-import at.fhtw.sampleapp.model.BattleModel;
+import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.model.Waiting;
-import at.fhtw.sampleapp.service.batlle.battleLogic.Game;
-import at.fhtw.sampleapp.service.batlle.battleLogic.PreGameRoom;
+import at.fhtw.sampleapp.service.batlles.battleLogic.PreGameRoom;
 import at.fhtw.sampleapp.service.repoCollection.RepoWaiting;
 import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
 
@@ -68,8 +67,8 @@ public class BattleFacade {
             //start battleLogicFunction
             waitingList = repoWaiting.getWaitingPlayers();
             PreGameRoom preGameRoom = new PreGameRoom(waitingList.get(0).getUser_id(), waitingList.get(1).getUser_id());
-            List<BattleModel> playerList = preGameRoom.getBattleModelsOfPlayers();
-            Game game = new Game(playerList);
+            List<UserCardModel> playerList = preGameRoom.getBattleModelsOfPlayers();
+            BattleController.Game game = new BattleController.Game(playerList);
             String winner = game.start();
             //start battle with the cards
 

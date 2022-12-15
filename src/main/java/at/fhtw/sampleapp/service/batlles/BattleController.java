@@ -1,4 +1,4 @@
-package at.fhtw.sampleapp.service.batlle;
+package at.fhtw.sampleapp.service.batlles;
 
 import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
@@ -7,9 +7,11 @@ import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.CustomExceptions.PlayerAlreadyInQueueException;
 import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
 import at.fhtw.sampleapp.controller.Controller;
+import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.List;
 import java.util.Map;
 
 public class BattleController extends Controller {
@@ -70,6 +72,23 @@ public class BattleController extends Controller {
                     ContentType.PLAIN_TEXT,
                     "{ \"message\" : \"player is already in queue\" }"
             );
+        }
+    }
+
+    public static class Game {
+        private UserCardModel player1;
+        private UserCardModel player2;
+
+        public Game(List<UserCardModel> playerList) {
+            this.player1 = playerList.get(0);
+            this.player2 = playerList.get(1);
+        }
+
+        public synchronized String start()  {
+            //check if battle has already taken place
+            String winner = "player 1";
+
+            return winner;
         }
     }
 }

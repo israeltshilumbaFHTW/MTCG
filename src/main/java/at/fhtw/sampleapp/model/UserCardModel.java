@@ -2,12 +2,11 @@ package at.fhtw.sampleapp.model;
 
 import java.util.List;
 
-public class BattleModel {
+public class UserCardModel {
     List<Card> cardList;
-//missing Card Description
     private int user_id;
 
-    public BattleModel(List<Card> cardList, int user_id) {
+    public UserCardModel(List<Card> cardList, int user_id) {
         this.cardList = cardList;
         this.user_id = user_id;
     }
