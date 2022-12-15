@@ -18,7 +18,8 @@ public class Game {
         this.battleEventHandler = new BattleEventHandler(this.player1, this.player2);
     }
 
-    public void startGame() {
+    public String startGame() {
+        System.out.printf("Start Game");
         //check match up
         while(true) {
 
@@ -50,18 +51,18 @@ public class Game {
             if(this.player1.getCardList().size() == 0){
                 System.out.printf("Player 1 is out of Cards\n");
                 System.out.printf("Player 2 wins\n");
-                return;
+                return "Player 2 wins\n";
             }
 
             if(this.player2.getCardList().size() == 0){
                 System.out.printf("Player 2 is out of Cards\n");
                 System.out.printf("Player 1 wins\n");
-                return;
+                return "Winner 1 wins\n";
             }
 
             if(battleEventHandler.getRounds() >= 100) {
                 System.out.printf("Match ended in a Draw\n");
-                return;
+                return "Match ended in a Draw\n";
             }
         }
     }

@@ -62,5 +62,16 @@ public class RepoWaiting {
         }
     }
 
-
+    public void emptyWaiting() {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                        DELETE FROM waiting
+                        """
+            );
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

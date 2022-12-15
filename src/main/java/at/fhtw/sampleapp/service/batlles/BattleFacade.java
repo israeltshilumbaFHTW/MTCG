@@ -68,10 +68,13 @@ public class BattleFacade {
             waitingList = repoWaiting.getWaitingPlayers();
             PreGameRoom preGameRoom = new PreGameRoom(waitingList.get(0).getUser_id(), waitingList.get(1).getUser_id());
             List<UserCardModel> playerList = preGameRoom.getBattleModelsOfPlayers();
-            BattleController.Game game = new BattleController.Game(playerList);
-            String winner = game.start();
+            Game game = new Game(playerList.get(0), playerList.get(1));
+            String winner = game.startGame();
             //start battle with the cards
 
+            //delete waiting
+
+            repoWaiting.emptyWaiting();
             return winner;
             //return winner;
         }

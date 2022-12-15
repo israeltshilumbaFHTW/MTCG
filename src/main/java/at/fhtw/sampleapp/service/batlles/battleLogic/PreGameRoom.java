@@ -20,8 +20,10 @@ public class PreGameRoom {
 
 
     public List<UserCardModel> getBattleModelsOfPlayers() {
-        List<Card> user1CardList = getCardList(user_id_1);
+        RepoDecks repoDecks = new RepoDecks();
+        List<Card> user1CardList = getCardList(user_id_1); //dont get Cardlist -> get decklist
         List<Card> user2CardList = getCardList(user_id_2);
+
         UserCardModel userCardModel1 = new UserCardModel(user1CardList, user_id_1);
         UserCardModel userCardModel2 = new UserCardModel(user2CardList, user_id_2);
 
@@ -46,6 +48,5 @@ public class PreGameRoom {
                 }
         );
         return cardList;
-
     }
 }
