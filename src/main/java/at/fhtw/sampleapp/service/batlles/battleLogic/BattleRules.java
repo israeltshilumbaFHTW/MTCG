@@ -1,6 +1,7 @@
 package at.fhtw.sampleapp.service.batlles.battleLogic;
 
 import at.fhtw.sampleapp.model.Card;
+import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
 
 import java.util.Map;
 import java.util.Objects;
@@ -49,55 +50,88 @@ public class BattleRules {
     }
 
     public String getSpecialInteraction(String cardClass1, String cardClass2) {
+        Documentation battleDocumentation = Documentation.getDocumentation();
+
         if (Objects.equals(cardClass1, "goblin") && Objects.equals(cardClass2, "dragon")) {
             System.out.printf("Goblin is too afraid to attack dragon\n");
+
+            String interactionMessage = "Goblin is too afraid too attack dragon\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass2;
         }
 
         if (Objects.equals(cardClass1, "dragon") && Objects.equals(cardClass2, "goblin")) {
             System.out.printf("Goblin is too afraid to attack dragon\n");
+
+            String interactionMessage = "Goblin is too afraid too attack dragon\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass1;
         }
 
         if (Objects.equals(cardClass1, "wizard") && Objects.equals(cardClass2, "ork")) {
             System.out.printf("Ork is being mind controlled and cannot attack\n");
+
+            String interactionMessage = "Ork is being mind controlled and cannot attack\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass1;
         }
 
         if (Objects.equals(cardClass1, "ork") && Objects.equals(cardClass2, "wizard")) {
             System.out.printf("Ork is being mind controlled and cannot attack\n");
+
+            String interactionMessage = "Ork is being mind controlled and cannot attack\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass1;
         }
 
         if (Objects.equals(cardClass1, "knight") && Objects.equals(cardClass2, "waterSpell")) {
             System.out.printf("Knight drowns due to his heavy armor\n");
+
+            String interactionMessage = "Knight drowns due to his heavy armor\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass2;
         }
 
         if (Objects.equals(cardClass2, "waterSpell") && Objects.equals(cardClass1, "knight")) {
             System.out.printf("Knight drowns due to his heavy armor\n");
+
+            String interactionMessage = "Knight drowns due to his heavy armor\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass1;
         }
 
         if (Objects.equals(cardClass1, "kraken") && Objects.equals(cardClass2, "spell")) {
             System.out.printf("Kraken is immune against spells\n");
+
+            String interactionMessage = "Kraken is immune against spells\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass1;
         }
 
         if (Objects.equals(cardClass1, "spell") && Objects.equals(cardClass2, "kraken")) {
             System.out.printf("Kraken is immune against spells\n");
+
+            String interactionMessage = "Kraken is immune against spells\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass2;
         }
 
         if (Objects.equals(cardClass1, "fireElf") && Objects.equals(cardClass2, "dragon")) {
             System.out.printf("FireElves cannot be hit by dragons\n");
+
+            String interactionMessage = "FireElves cannot be hit by dragons\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass1;
         }
 
         if (Objects.equals(cardClass1, "dragon") && Objects.equals(cardClass2, "fireElf")) {
             System.out.printf("FireElves cannot be hit by dragons\n");
+
+            String interactionMessage = "FireElves cannot be hit by dragons\n";
+            battleDocumentation.addBattleLog(interactionMessage);
             return cardClass2;
         }
+
         return "no interaction";
     }
 }

@@ -2,7 +2,9 @@ package at.fhtw.sampleapp.service.batlles.battleLogic;
 
 import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.model.Card;
+import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
 
+import javax.print.Doc;
 import java.util.Objects;
 
 public class BattleEventHandler {
@@ -20,6 +22,8 @@ public class BattleEventHandler {
     }
 
     public int getRoundWinner(Card player1Card, Card player2Card) {
+        Documentation documentation = Documentation.getDocumentation();
+
         double player1CardDamage = player1Card.getCard_damage();
         double player2CardDamage = player2Card.getCard_damage();
         BattleRules battleRules = new BattleRules();
@@ -46,7 +50,13 @@ public class BattleEventHandler {
             //remove Card from player 2
             removeLoserCard(player2Card, 2);
             System.out.printf("Player 1 deals %.2f damage\n", player1CardDamage);
+            String damageMessage1 = "Player 1 deals " + player1CardDamage + " damage";
+            documentation.addBattleLog(damageMessage1);
+
             System.out.printf("Player 2 deals %.2f damage\n", player2CardDamage);
+            String damageMessage2 = "Player 2 deals " + player2CardDamage + " damage";
+            documentation.addBattleLog(damageMessage2);
+
             return PLAYER1;
         }
 
@@ -54,7 +64,13 @@ public class BattleEventHandler {
             //remove Card from player 1
             removeLoserCard(player1Card, 1);
             System.out.printf("Player 1 deals %.2f damage\n", player1CardDamage);
+            String damageMessage1 = "Player 1 deals " + player1CardDamage + " damage";
+            documentation.addBattleLog(damageMessage1);
+
             System.out.printf("Player 2 deals %.2f damage\n", player2CardDamage);
+            String damageMessage2 = "Player 2 deals " + player2CardDamage + " damage";
+            documentation.addBattleLog(damageMessage2);
+
             return PLAYER2;
         }
 

@@ -9,10 +9,12 @@ import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
+import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BattleController extends Controller {
     private BattleFacade battleFacade;
@@ -33,6 +35,22 @@ public class BattleController extends Controller {
             String message = battleFacade.initBattle(user_id);
             String messageJson = this.getObjectMapper().writeValueAsString(message);
 
+            Documentation documentation = Documentation.getDocumentation();
+
+            //delete later:
+            if(!documentation.isListEmpty()) {
+                String documentationJson = this.getObjectMapper().writeValueAsString(documentation);
+
+                String textMessage = documentation.getBattleLog().stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining("\n"));
+
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.PLAIN_TEXT,
+                        textMessage
+                );
+            }
 
             return new Response(
                     HttpStatus.OK,
@@ -46,7 +64,7 @@ public class BattleController extends Controller {
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
-                    "{ \"message\" : \"Error getting Cards\" }"
+                    "{ \"message\" : \"Internal Server Error\" }"
             );
 
         } catch (NullPointerException e) {

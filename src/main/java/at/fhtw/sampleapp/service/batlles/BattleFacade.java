@@ -5,6 +5,7 @@ import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
 import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.model.Waiting;
 import at.fhtw.sampleapp.service.batlles.battleLogic.PreGameRoom;
+import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
 import at.fhtw.sampleapp.service.repoCollection.RepoWaiting;
 import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BattleFacade {
     private static final int WAITING_TIME_SECONDS = 10;
     private static final int ONE_SECOND = 1000;
+    private volatile boolean endFlag = false;
 
     public String initBattle(int user_id) throws WaitTimeoutException, PlayerAlreadyInQueueException{
         //check if a player is waiting
@@ -36,19 +38,25 @@ public class BattleFacade {
                 System.err.println("waiting Room Exception");
             }
             //this code is after the waiting room session
-            waitingPlayerList = repoWaiting.getWaitingPlayers();
 
+            waitingPlayerList = repoWaiting.getWaitingPlayers();
+            if(waitingPlayerList == null) {
+                return "Battle already ended";
+            }
             if (waitingPlayerList.size() == 1 ) { //no player was added
                 return "NO OPPONENT AVAILABLE";
                 //throw new WaitTimeoutException("No Opponent Available");
                 //Todo: rollback connection
             }
             //ToDo: second player was found in the list -> what should the first player do?
+            //check the logs
+            if(endFlag) {
+                return "Battle already ended";
+            }
             return "FIST PLAYER FOUND A SECOND PLAYER AFTER WAITING";
             //return -1;
 
         } else { //a player is already waiting -> you are second
-
             //check if player already has an entry
             List<Waiting> waitingList = repoWaiting.getWaitingPlayers();
             AtomicBoolean playerIsAlreadyWaiting = new AtomicBoolean(false);
@@ -59,28 +67,31 @@ public class BattleFacade {
                       }
                    }
             );
-            if(playerIsAlreadyWaiting.get()) throw new PlayerAlreadyInQueueException("Player is already waiting");
+            if(playerIsAlreadyWaiting.get()) throw new PlayerAlreadyInQueueException("Player is already waiting"); //cant fight against one self
 
             //add player to waiting list and start the game
             repoWaiting.addToWaitingRoom(user_id, repoDecks.getDeckIdWithUserId(user_id));
+            String winner = getWinner(user_id, repoWaiting, repoDecks);
 
-            //start battleLogicFunction
-            waitingList = repoWaiting.getWaitingPlayers();
-            PreGameRoom preGameRoom = new PreGameRoom(waitingList.get(0).getUser_id(), waitingList.get(1).getUser_id());
-            List<UserCardModel> playerList = preGameRoom.getBattleModelsOfPlayers();
-            Game game = new Game(playerList.get(0), playerList.get(1));
-            String winner = game.startGame();
-            //start battle with the cards
-
-            //delete waiting
-
-            repoWaiting.emptyWaiting();
+            Documentation documentation = Documentation.getDocumentation();
             return winner;
-            //return winner;
         }
     }
 
-    private synchronized void waitingRoom() throws InterruptedException {
+    private synchronized String getWinner(int user_id, RepoWaiting repoWaiting, RepoDecks repoDecks) {
+        List<Waiting> waitingList = repoWaiting.getWaitingPlayers();
+        PreGameRoom preGameRoom = new PreGameRoom(waitingList.get(0).getUser_id(), waitingList.get(1).getUser_id());
+
+        List<UserCardModel> playerList = preGameRoom.getBattleModelsOfPlayers();
+        Game game = new Game(playerList.get(0), playerList.get(1));
+        String winner = game.startGame();
+
+        repoWaiting.emptyWaiting();
+        endFlag = true;
+        return winner;
+    }
+
+    private void waitingRoom() throws InterruptedException {
         int timerSeconds = 0;
         while (timerSeconds < WAITING_TIME_SECONDS) {
             Thread.sleep(ONE_SECOND);
