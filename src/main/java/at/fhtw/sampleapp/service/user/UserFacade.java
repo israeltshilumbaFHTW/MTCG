@@ -54,9 +54,11 @@ public class UserFacade {
         User user = repoUser.getUser(user_username);
         RepoStats repoStats = new RepoStats();
 
-        int defaultElo = 1000;
-        int defaultWins = 0;
-        int defaultLosses = 0;
+        final int defaultElo = 1000;
+        final int defaultWins = 0;
+        final int defaultLosses = 0;
+        final int defaultDraws = 0;
+
         String username;
 
         if(user.getUser_name() == null) {
@@ -65,7 +67,7 @@ public class UserFacade {
             username = user.getUser_name();
         }
 
-        success = repoStats.addDefaultStats(defaultElo, defaultWins, defaultLosses, username, user.getUser_id());
+        success = repoStats.addDefaultStats(defaultElo, defaultWins, defaultLosses, defaultDraws, username, user.getUser_id());
 
 
         return success;

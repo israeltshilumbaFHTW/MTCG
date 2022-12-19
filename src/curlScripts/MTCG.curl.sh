@@ -230,8 +230,10 @@ echo -e "\n"
 # --------------------------------------------------
 echo "17) battle"
 read line
-gnome-terminal -- /bin/bash -c 'echo "kienboec battle"; curl -X POST http://localhost:10001/battles --header "Authorization: Basic kienboec-mtcgToken"; read line'
-gnome-terminal -- /bin/bash -c 'echo "altenhof battle"; curl -X POST http://localhost:10001/battles --header "Authorization: Basic altenhof-mtcgToken"; read line'
+#gnome-terminal -- /bin/bash -c 'echo "kienboec battle"; curl -X POST http://localhost:10001/battles --header "Authorization: Basic kienboec-mtcgToken"; read line'
+#gnome-terminal -- /bin/bash -c 'echo "altenhof battle"; curl -X POST http://localhost:10001/battles --header "Authorization: Basic altenhof-mtcgToken"; read line'
+open -a iTerm2 -- /bin/bash -c 'echo "altenhof battle"; curl -X POST http://localhost:10001/battles --header "Authorization: Basic altenhof-mtcgToken"; read line'
+open -a iTerm2 -- /bin/bash -c 'echo "kienboec battle"; curl -X POST http://localhost:10001/battles --header "Authorization: Basic kienboec-mtcgToken"; read line'
 sleep 5
 
 # --------------------------------------------------

@@ -4,15 +4,17 @@ public class Stats {
     private int stats_elo;
     private int stats_wins;
     private int stats_losses;
+    private int stats_draws;
     private String user_name;
 
     public Stats(){}
 
-    public Stats(String user_name, int stats_elo, int stats_wins, int stats_losses) {
+    public Stats(String user_name, int stats_elo, int stats_wins, int stats_losses, int stats_draws) {
         this.stats_elo = stats_elo;
         this.stats_losses = stats_losses;
         this.stats_wins = stats_wins;
         this.user_name = user_name;
+        this.stats_draws = stats_draws;
     }
 
     public int getStats_elo() {
@@ -45,5 +47,13 @@ public class Stats {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public int getStats_draws() {
+        return stats_draws;
+    }
+
+    public void setStats_draws(int stats_draws) {
+        this.stats_draws = stats_draws;
     }
 }

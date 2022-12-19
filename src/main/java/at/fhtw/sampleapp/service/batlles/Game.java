@@ -1,11 +1,15 @@
 package at.fhtw.sampleapp.service.batlles;
 
-import at.fhtw.httpserver.utils.Router;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.service.batlles.battleLogic.BattleEventHandler;
 import at.fhtw.sampleapp.service.batlles.battleLogic.BattleRules;
+import at.fhtw.sampleapp.service.batlles.battleLogic.PostGame.EloCalculator;
+import at.fhtw.sampleapp.service.batlles.battleLogic.PostGame.PostGameFacade;
 import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -74,7 +78,8 @@ public class Game {
                 String player1outOfCardMessage = "Player 1 is out of Cards\n Player 2 wins\n";
                 documentation.addBattleLog(player1outOfCardMessage);
 
-                return "Player 2 wins\n";
+                handlePostGame(2);
+                return "Player 2 wins";
             }
 
             if(this.player2.getCardList().size() == 0){
@@ -84,15 +89,46 @@ public class Game {
                 String player2outOfCardMessage = "Player 1 is out of Cards\n Player 2 wins\n";
                 documentation.addBattleLog(player2outOfCardMessage);
 
-                return "Winner 1 wins\n";
+                handlePostGame(1);
+                return "Winner 1 wins";
             }
 
             if(battleEventHandler.getRounds() >= 100) {
                 System.out.printf("Match ended in a Draw\n");
 
                 String matchEndsInDrawMessage = "Match ended in a Draw\n";
-                return "Match ended in a Draw\n";
+
+                handlePostGame(0);
+                return "Match ended in a Draw";
             }
+        }
+    }
+
+    public void handlePostGame(int winner) {
+        PostGameFacade postGameFacade = new PostGameFacade();
+        if(winner == 1) {
+            postGameFacade.addWin(this.player1.getUser_id());
+            postGameFacade.addLoss(this.player2.getUser_id());
+            //Get elos
+            List<Integer> playerElos = postGameFacade.getPlayerElos(this.player1.getUser_id(), this.player2.getUser_id());
+            List<Integer> playerNewElos = EloCalculator.updateEloRatings(playerElos.get(0), playerElos.get(1), true);
+
+            postGameFacade.updatePlayerElos(this.player1.getUser_id(), playerNewElos.get(0), this.player2.getUser_id(), playerNewElos.get(1));
+        }
+
+        if(winner == 2) {
+            postGameFacade.addWin(this.player2.getUser_id());
+            postGameFacade.addLoss(this.player1.getUser_id());
+            //Get elos
+            List<Integer> playerElos = postGameFacade.getPlayerElos(this.player1.getUser_id(), this.player2.getUser_id());
+            List<Integer> playerNewElos = EloCalculator.updateEloRatings(playerElos.get(0), playerElos.get(1), false);
+
+            postGameFacade.updatePlayerElos(this.player1.getUser_id(), playerNewElos.get(0), this.player2.getUser_id(), playerNewElos.get(1));
+        }
+
+        if (winner == 0) {
+            postGameFacade.addDraw(this.player1.getUser_id());
+            postGameFacade.addDraw(this.player2.getUser_id());
         }
     }
 }

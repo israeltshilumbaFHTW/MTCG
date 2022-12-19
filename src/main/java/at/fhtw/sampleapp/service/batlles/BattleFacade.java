@@ -4,12 +4,14 @@ import at.fhtw.sampleapp.CustomExceptions.PlayerAlreadyInQueueException;
 import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
 import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.model.Waiting;
+import at.fhtw.sampleapp.service.batlles.battleLogic.PostGame.PostGameFacade;
 import at.fhtw.sampleapp.service.batlles.battleLogic.PreGameRoom;
 import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
 import at.fhtw.sampleapp.service.repoCollection.RepoWaiting;
 import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BattleFacade {
@@ -73,7 +75,9 @@ public class BattleFacade {
             repoWaiting.addToWaitingRoom(user_id, repoDecks.getDeckIdWithUserId(user_id));
             String winner = getWinner(user_id, repoWaiting, repoDecks);
 
-            Documentation documentation = Documentation.getDocumentation();
+            if(Objects.equals("Player 1 wins", winner)) {
+
+            }
             return winner;
         }
     }
@@ -98,4 +102,5 @@ public class BattleFacade {
             timerSeconds = timerSeconds + 1;
         }
     }
+
 }

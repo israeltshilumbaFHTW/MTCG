@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS rounds;
+DROP TABLE IF EXISTS waiting;
 DROP TABLE IF EXISTS player_package_link;
 DROP TABLE IF EXISTS card_deck_link;
 DROP TABLE IF EXISTS card_stack_link;
@@ -8,6 +10,7 @@ DROP TABLE IF EXISTS stacks;
 DROP TABLE IF EXISTS decks;
 DROP TABLE IF EXISTS stats;
 DROP TABLE IF EXISTS players;
+DROP TABLE IF EXISTS games;
 
 CREATE TABLE players
 (
@@ -54,9 +57,12 @@ CREATE TABLE decks
 
 CREATE TABLE cards
 (
-    card_id     varchar(255) NOT NULL,
-    card_name   varchar(255) NOT NULL,
-    card_damage int          NOT NULL,
+    card_id      varchar(255) NOT NULL,
+    card_name    varchar(255) NOT NULL,
+    card_damage  int          NOT NULL,
+    card_class   varchar(255) NOT NULL,
+    card_type    varchar(255) NOT NULL,
+    card_element varchar(255) NOT NULL,
     PRIMARY KEY (card_id)
 
 );
@@ -135,10 +141,48 @@ CREATE TABLE player_package_link
 
 CREATE TABLE stats
 (
-    stat_id SERIAL,
-    user_id int NOT NULL,
-    user_name varchar(255),
-    user_elo int NOT NULL,
-    user_wins int NOT NULL,
+    stat_id     SERIAL,
+    user_id     int NOT NULL,
+    user_name   varchar(255),
+    user_elo    int NOT NULL,
+    user_wins   int NOT NULL,
     user_losses int NOT NULL
+);
+
+CREATE TABLE waiting
+(
+    user_id   int  NOT NULL UNIQUE,
+    deck_id   int  NOT NULL,
+    isWaiting bool NOT NULL,
+
+    CONSTRAINT fk_player
+        FOREIGN KEY (user_id)
+            REFERENCES players (user_id)
+            ON DELETE CASCADE,
+
+    CONSTRAINT fk_deck
+        FOREIGN KEY (deck_id)
+            REFERENCES decks (deck_id)
+            ON DELETE CASCADE
+);
+
+CREATE TABLE games
+(
+    game_id  SERIAL PRIMARY KEY,
+    player_1 INT NOT NULL,
+    player_2 INT NOT NULL
+
+);
+
+CREATE TABLE rounds
+(
+    round_id         SERIAL PRIMARY KEY,
+    game_id          INT     NOT NULL,
+    round_logMessage VARCHAR NOT NULL,
+    card_1_id        VARCHAR NOT NULL,
+
+    CONSTRAINT fk_games
+        FOREIGN KEY (game_id)
+            REFERENCES games (game_id)
+            ON DELETE CASCADE
 );
