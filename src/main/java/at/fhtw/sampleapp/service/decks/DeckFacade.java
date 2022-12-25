@@ -1,6 +1,6 @@
 package at.fhtw.sampleapp.service.decks;
 
-import at.fhtw.sampleapp.CustomExceptions.CardNotOwnedException;
+import at.fhtw.sampleapp.customExceptions.CardNotOwnedException;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.cards.CardFacade;
 import at.fhtw.sampleapp.service.repoCollection.RepoCard;
@@ -10,7 +10,6 @@ import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DeckFacade {

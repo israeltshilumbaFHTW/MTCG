@@ -1,4 +1,4 @@
-package at.fhtw.sampleapp.CustomExceptions;
+package at.fhtw.sampleapp.customExceptions;
 
 public class PlayerAlreadyInQueueException extends Exception{
     public PlayerAlreadyInQueueException(String errorMessage) {

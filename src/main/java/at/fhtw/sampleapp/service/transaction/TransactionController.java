@@ -4,9 +4,9 @@ import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
-import at.fhtw.sampleapp.CustomExceptions.NotEnoughMoneyException;
-import at.fhtw.sampleapp.CustomExceptions.PackageNotAvailableException;
-import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
+import at.fhtw.sampleapp.customExceptions.NotEnoughMoneyException;
+import at.fhtw.sampleapp.customExceptions.PackageNotAvailableException;
+import at.fhtw.sampleapp.customExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 

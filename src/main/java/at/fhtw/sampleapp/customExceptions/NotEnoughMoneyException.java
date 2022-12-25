@@ -1,4 +1,4 @@
-package at.fhtw.sampleapp.CustomExceptions;
+package at.fhtw.sampleapp.customExceptions;
 
 public class NotEnoughMoneyException extends Exception {
     public NotEnoughMoneyException(String errorMessage) {

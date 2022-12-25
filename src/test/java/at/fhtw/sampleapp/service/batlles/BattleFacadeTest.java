@@ -1,11 +1,7 @@
 package at.fhtw.sampleapp.service.batlles;
 
-import at.fhtw.sampleapp.CustomExceptions.WaitTimeoutException;
-import at.fhtw.sampleapp.service.repoCollection.RepoWaiting;
-import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
+import at.fhtw.sampleapp.customExceptions.WaitTimeoutException;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BattleFacadeTest {
 

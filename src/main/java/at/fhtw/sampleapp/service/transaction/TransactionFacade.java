@@ -1,11 +1,11 @@
 package at.fhtw.sampleapp.service.transaction;
 
-import at.fhtw.sampleapp.CustomExceptions.PackageNotAvailableException;
-import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
+import at.fhtw.sampleapp.customExceptions.PackageNotAvailableException;
+import at.fhtw.sampleapp.customExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.service.repoCollection.RepoPackages;
 import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserPackages;
-import at.fhtw.sampleapp.CustomExceptions.NotEnoughMoneyException;
+import at.fhtw.sampleapp.customExceptions.NotEnoughMoneyException;
 
 public class TransactionFacade {
 

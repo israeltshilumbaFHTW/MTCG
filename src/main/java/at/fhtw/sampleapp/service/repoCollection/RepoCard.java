@@ -1,6 +1,5 @@
 package at.fhtw.sampleapp.service.repoCollection;
 
-import at.fhtw.sampleapp.CustomExceptions.CardNotOwnedException;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.DatabaseConnection;
 

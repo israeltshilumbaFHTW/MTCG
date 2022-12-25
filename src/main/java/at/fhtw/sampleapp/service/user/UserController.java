@@ -1,7 +1,7 @@
 package at.fhtw.sampleapp.service.user;
 
 import at.fhtw.httpserver.server.Response;
-import at.fhtw.sampleapp.CustomExceptions.UnexpectedErrorException;
+import at.fhtw.sampleapp.customExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.model.User;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
