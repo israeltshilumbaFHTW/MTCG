@@ -5,14 +5,13 @@ import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
-import at.fhtw.sampleapp.customExceptions.TradeAlreadyExistsException;
+import at.fhtw.sampleapp.customExceptions.CustomException;
 import at.fhtw.sampleapp.model.Trading;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class TradingController extends Controller {
     private TradingFacade tradingFacade;
@@ -57,7 +56,6 @@ public class TradingController extends Controller {
 
     public Response addTrade(Request request) {
 
-
         Map<String, Integer> userAuthorization = UserAuthorizationMap.getAuthorization();
         String authorization = request.getHeaderMap().getHeader("Authorization");
         int user_id = userAuthorization.get(authorization);
@@ -71,13 +69,10 @@ public class TradingController extends Controller {
                         "{ \"message\": \"Trade added\" }"
                 );
             }
-
-
-
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             System.err.println("JSON Derulo");
-        } catch (TradeAlreadyExistsException e) {
+        } catch (CustomException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
 
@@ -103,10 +98,51 @@ public class TradingController extends Controller {
         );
     }
 
-    /*
 
     public Response commitTrade(Request request) {
+
+        Map<String, Integer> userAuthorization = UserAuthorizationMap.getAuthorization();
+        String authorization = request.getHeaderMap().getHeader("Authorization");
+        int user_id = userAuthorization.get(authorization);
+
+
+        try {
+            String tradeId = request.getPathParts().get(1);
+            String tradeCard = this.getObjectMapper().readValue(request.getBody(), String.class);
+
+            if(this.tradingFacade.startTrade(tradeId, tradeCard, user_id)) {
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.JSON,
+                        "{ \"message\": \"Trade Successful\" }"
+                );
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("User not authorized");
+        } catch (JsonProcessingException e) {
+            System.err.println("JSON processing error");
+            e.printStackTrace();
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ContentType.JSON,
+                    "{ \"message\" : \"Internal Server Error\" }."
+            );
+        } catch (CustomException e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    ContentType.JSON,
+                    "{ \"message\" : \"" + e.getMessage() + "\" }"
+            );
+        }
+        return new Response(
+                HttpStatus.BAD_REQUEST,
+                ContentType.JSON,
+                "{ \"message\" : \"Bad Request\" }"
+        );
     }
-     */
 
 }

@@ -276,16 +276,25 @@ echo "21) check trading deals"
 read line
 curl -X GET http://localhost:10001/tradings  --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
+
+echo "Add trade"
+read line
 curl -X POST http://localhost:10001/tradings --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "{\"Id\": \"6cd85277-4590-49d4-b0cf-ba0a921faad0\", \"CardToTrade\": \"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\", \"Type\": \"monster\", \"MinimumDamage\": 15}" | jq .
-echo check trading deals
+
+echo "check trading deals"
+read line
 curl -X GET http://localhost:10001/tradings  --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
 curl -X GET http://localhost:10001/tradings  --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
+
 echo "try to trade with yourself (should fail)"
+read line
 curl -X POST http://localhost:10001/tradings/6cd85277-4590-49d4-b0cf-ba0a921faad0 --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "\"4ec8b269-0dfa-4f97-809a-2c63fe2a0025\"" | jq .
 echo -e "\n"
-echo try to trade
+
+echo "try to trade"
+read line
 echo -e "\n"
 curl -X POST http://localhost:10001/tradings/6cd85277-4590-49d4-b0cf-ba0a921faad0 --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d "\"951e886a-0fbf-425d-8df5-af2ee4830d85\"" | jq .
 echo -e "\n"

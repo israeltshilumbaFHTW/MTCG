@@ -20,10 +20,10 @@ public class TradingService implements Service {
        try{
            if(request.getMethod() == Method.GET) {
                return this.tradingController.getTradingList();
+           } else if(request.getMethod() == Method.POST && request.getPathParts().size() > 1) {//Try to trade with an existing card
+               return this.tradingController.commitTrade(request);
            } else if(request.getMethod() == Method.POST) {
                return this.tradingController.addTrade(request);
-           } else if(request.getMethod() == Method.POST && request.getPathParts().size() > 1) {
-               //do stuff
            }
 
        } catch (NullPointerException e) {

@@ -1,10 +1,17 @@
 package at.fhtw.sampleapp.service.user;
 
 import at.fhtw.sampleapp.customExceptions.UnexpectedErrorException;
+import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.model.User;
+import at.fhtw.sampleapp.service.repoCollection.RepoCard;
+import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
 import at.fhtw.sampleapp.service.repoCollection.RepoStats;
 import at.fhtw.sampleapp.service.repoCollection.RepoUser;
+import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoCardPackages;
+import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserCards;
+import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserPackages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserFacade {
@@ -99,5 +106,54 @@ public class UserFacade {
         }
 
         return true;
+    }
+
+    public void addUserCards(int user_id) {
+        //get packages with user_id
+        RepoUserCards repoUserCards = new RepoUserCards();
+        RepoUserPackages repoUserPackages = new RepoUserPackages();
+        List<Integer> packageIdList = repoUserPackages.getUserPackages(user_id);
+
+
+        //get all card_ids with package_ids
+        RepoCardPackages repoCardPackages = new RepoCardPackages();
+        List<String> cardIdList = new ArrayList<>();
+
+        packageIdList.forEach(package_id -> {
+            List<String> queryCardIdList = repoCardPackages.getCardInPackage(package_id);
+            //add each card_id to cardList
+            queryCardIdList.forEach(card_id -> cardIdList.add(card_id));
+        });
+
+        cardIdList.forEach(
+                cardId -> {
+                    repoUserCards.addUserCard(user_id, cardId);
+                }
+        );
+
+        //ToDo: get Cards
+       /*
+         RepoCard repoCard = new RepoCard();
+
+        List<Card> cardList = new ArrayList<>();
+        cardIdList.forEach(card_id -> cardList.add(repoCard.getCard(card_id)));
+
+        */
+    }
+    public List<Card> getUserCardList(int user_id) { //USER DECK(4 KARTEN), nicht STACK
+
+        RepoDecks repoDecks = new RepoDecks();
+        RepoCard repoCard = new RepoCard();
+        List<Card> cardList = new ArrayList<>();
+
+        List<String> cardIdList = repoDecks.getDeck(user_id);
+
+        cardIdList.forEach(
+                cardId -> {
+                    //get Card with Card ID
+                    cardList.add(repoCard.getCard(cardId));
+                }
+        );
+        return cardList;
     }
 }

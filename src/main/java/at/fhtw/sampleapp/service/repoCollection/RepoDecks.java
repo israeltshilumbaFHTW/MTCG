@@ -138,4 +138,37 @@ public class RepoDecks {
         }
         return -1;
     }
+
+    public boolean removeCardFromDeck(int cardPosition, int user_id) {
+        String cardPositionString = "";
+        if(cardPosition == 1) {
+            cardPositionString = "card_1_id";
+        } else if(cardPosition == 2) {
+            cardPositionString = "card_2_id";
+        } else if(cardPosition == 3) {
+            cardPositionString = "card_3_id";
+        } else if (cardPosition == 4) {
+            cardPositionString = "card_4_id";
+        }
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                            UPDATE decks
+                            SET ? = NULL
+                            WHERE user_id = ? 
+                            """
+            );
+
+            statement.setString(1, cardPositionString);
+            statement.setInt(2,user_id);
+            statement.execute();
+
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error in deleteCardFromDeck");
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

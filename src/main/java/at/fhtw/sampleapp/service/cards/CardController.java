@@ -46,6 +46,7 @@ public class CardController extends Controller {
 
         } catch (NullPointerException e) {
             e.printStackTrace();
+
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,

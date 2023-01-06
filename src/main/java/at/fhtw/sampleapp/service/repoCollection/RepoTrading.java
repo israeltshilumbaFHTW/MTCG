@@ -46,6 +46,65 @@ public class RepoTrading {
         }
     }
 
+    public int getUserIdFromTradingId(String trading_id) {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    """
+                            SELECT user_id
+                            FROM trading
+                            WHERE trading_id = ?
+                            """
+            );
+
+            statement.setString(1, trading_id);
+            ResultSet resultSet = statement.executeQuery();
+            int user_id = -1;
+
+            if (resultSet.next()) {
+                user_id = resultSet.getInt(1);
+            }
+
+            return user_id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error in getTradeWithTradeId");
+            return -1;
+            //ToDo: add Rollback
+        }
+    }
+    public List<Trading> getTradeWithTradeId(String trading_id) {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(
+                    """
+                            SELECT *
+                            FROM trading
+                            WHERE trading_id = ?
+                            """
+            );
+            statement.setString(1, trading_id);
+            ResultSet resultSet = statement.executeQuery();
+
+            List<Trading> tradeList = new ArrayList<>();
+            while (resultSet.next()) {
+                tradeList.add(
+                        new Trading(
+                                resultSet.getString(2),
+                                resultSet.getString(3),
+                                resultSet.getString(4),
+                                resultSet.getInt(5)
+                        )
+                );
+            }
+            return tradeList;
+
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error in getTradeWithTradeId");
+            //ToDo: add Rollback
+            return new ArrayList<>();
+        }
+    }
     public List<Trading> getTradeFromUser(int user_id) {
         try {
             PreparedStatement statement = this.connection.prepareStatement(
@@ -151,6 +210,7 @@ public class RepoTrading {
                             """
             );
 
+            statement.setString(1, trading_id);
             statement.execute();
 
         } catch (SQLException e) {

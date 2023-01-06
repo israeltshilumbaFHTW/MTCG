@@ -4,6 +4,8 @@ import at.fhtw.sampleapp.model.UserCardModel;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.repoCollection.RepoCard;
 import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
+import at.fhtw.sampleapp.service.repoCollection.RepoUser;
+import at.fhtw.sampleapp.service.user.UserFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,10 @@ public class PreGameRoom {
 
 
     public List<UserCardModel> getBattleModelsOfPlayers() {
-        RepoDecks repoDecks = new RepoDecks();
-        List<Card> user1CardList = getCardList(user_id_1); //dont get Cardlist -> get decklist
-        List<Card> user2CardList = getCardList(user_id_2);
+        UserFacade userFacade = new UserFacade();
+
+        List<Card> user1CardList = userFacade.getUserCardList(user_id_1); //dont get Cardlist -> get decklist
+        List<Card> user2CardList = userFacade.getUserCardList(user_id_2);
 
         UserCardModel userCardModel1 = new UserCardModel(user1CardList, user_id_1);
         UserCardModel userCardModel2 = new UserCardModel(user2CardList, user_id_2);
@@ -32,21 +35,5 @@ public class PreGameRoom {
         playerList.add(userCardModel2);
 
         return playerList;
-    }
-
-    private List<Card> getCardList(int user_id) {
-        RepoDecks repoDecks = new RepoDecks();
-        RepoCard repoCard = new RepoCard();
-        List<Card> cardList = new ArrayList<>();
-
-        List<String> cardIdList = repoDecks.getDeck(user_id);
-
-        cardIdList.forEach(
-                cardId -> {
-                    //get Card with Card ID
-                    cardList.add(repoCard.getCard(cardId));
-                }
-        );
-        return cardList;
     }
 }
