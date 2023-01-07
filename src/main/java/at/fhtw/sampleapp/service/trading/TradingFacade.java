@@ -6,7 +6,6 @@ import at.fhtw.sampleapp.model.Trading;
 import at.fhtw.sampleapp.service.repoCollection.RepoCard;
 import at.fhtw.sampleapp.service.repoCollection.RepoDecks;
 import at.fhtw.sampleapp.service.repoCollection.RepoTrading;
-import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoCardDecks;
 import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserCards;
 
@@ -53,11 +52,7 @@ public class TradingFacade {
                repoDecks.removeCardFromDeck(iterator + 1, user_id);
             }
         }
-        //remove CardFromUserCard
-        repoUserCards.deleteUserCard(user_id, trade.getCard_to_trade());
 
-        //Todo: if something went wrong throw Exception here
-        //Todo: some jackson error :no idea what I meant by that
         return repoTrading.addTrade(user_id, trade);
     }
 
@@ -82,15 +77,39 @@ public class TradingFacade {
         }
 
         //if yes: remove cardUserTrades from player -> add new player cardUserTrades
-        repoUserCards.deleteUserCard(user_id, cardUserWantsToTrade); //user 1
-        repoUserCards.deleteUserCard(tradeUserId, trading.getCard_to_trade());
-
-        repoUserCards.addUserCard(tradeUserId, cardUserWantsToTrade); // 1 bekommt 951e886a-0fbf-425d-8df5-af2ee4830d85
-        repoUserCards.addUserCard(user_id, trading.getCard_to_trade());
-
+        if(!repoUserCards.deleteUserCard(user_id, cardUserWantsToTrade)) {
+            return false;
+        }
+        if(!repoUserCards.deleteUserCard(tradeUserId, trading.getCard_to_trade())) {
+            return false;
+        }
+        if (!repoUserCards.addUserCard(tradeUserId, cardUserWantsToTrade)) {
+            return false;
+        }
+        if (!repoUserCards.addUserCard(user_id, trading.getCard_to_trade())) {
+            return false;
+        }
         //delete trade
-        //repoTrading.deleteTrade(tradeId);
+        repoTrading.deleteTrade(tradeId);
         return true;
     }
 
+    public boolean deleteTrade(int user_id, String trading_id) throws CustomException {
+        //check if I am authorized to delete the trade
+        RepoTrading repoTrading = new RepoTrading();
+        int trading_user_id;
+
+        trading_user_id = repoTrading.getUserIdFromTradingId(trading_id);
+
+        if(trading_user_id == -1) {
+            throw new CustomException("Trade does not exist");
+        }
+
+        if(trading_user_id != user_id) {
+            throw new CustomException("User is unauthorized");
+        }
+
+        repoTrading.deleteTrade(trading_id);
+        return true;
+    }
 }

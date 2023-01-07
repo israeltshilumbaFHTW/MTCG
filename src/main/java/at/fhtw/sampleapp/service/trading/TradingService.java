@@ -24,6 +24,8 @@ public class TradingService implements Service {
                return this.tradingController.commitTrade(request);
            } else if(request.getMethod() == Method.POST) {
                return this.tradingController.addTrade(request);
+           } else if(request.getMethod() == Method.DELETE) {
+               return this.tradingController.deleteTrade(request);
            }
 
        } catch (NullPointerException e) {

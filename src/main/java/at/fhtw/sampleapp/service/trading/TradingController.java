@@ -6,12 +6,14 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.customExceptions.CustomException;
+import at.fhtw.sampleapp.customExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.model.Trading;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TradingController extends Controller {
     private TradingFacade tradingFacade;
@@ -98,6 +100,37 @@ public class TradingController extends Controller {
         );
     }
 
+    public Response deleteTrade(Request request) {
+        Map<String, Integer> userAuthorization = UserAuthorizationMap.getAuthorization();
+        String authorization = request.getHeaderMap().getHeader("Authorization");
+        int user_id = userAuthorization.get(authorization);
+
+        try {
+            //Todo: finsish that
+            String trade_id = request.getPathParts().get(1);
+            if(this.tradingFacade.deleteTrade(user_id, trade_id)) {
+                return new Response(
+                        HttpStatus.CREATED,
+                        ContentType.JSON,
+                        "{ \"message\": \"Trade deleted\" }"
+                );
+            }
+        } catch (CustomException e) {
+            e.printStackTrace();
+
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    ContentType.JSON,
+                    "{ \"message\" : \"" + e.getMessage() + "\" }"
+            );
+        }
+
+        return new Response(
+                HttpStatus.BAD_REQUEST,
+                ContentType.JSON,
+                "{ \"message\" : \"Internal Server Error\" }"
+        );
+    }
 
     public Response commitTrade(Request request) {
 
