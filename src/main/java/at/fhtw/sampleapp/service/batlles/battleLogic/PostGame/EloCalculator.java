@@ -5,7 +5,7 @@ import java.util.List;
 
 public class EloCalculator {
     public static List<Integer> updateEloRatings(int player1Elo, int player2Elo, boolean player1Won) {
-        final int K = 40;
+        final int K = 80;
         // Calculate the expected score for each player
         double player1ExpectedScore = 1.0 / (1.0 + Math.pow(10.0, (player2Elo - player1Elo) / 400.0));
         double player2ExpectedScore = 1.0 / (1.0 + Math.pow(10.0, (player1Elo - player2Elo) / 400.0));

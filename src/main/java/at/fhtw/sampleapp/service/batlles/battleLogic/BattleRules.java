@@ -68,15 +68,15 @@ public class BattleRules {
             return cardClass1;
         }
 
-        if (Objects.equals(cardClass1, "wizard") && Objects.equals(cardClass2, "ork")) {
+        if (Objects.equals(cardClass1, "ork") && Objects.equals(cardClass2, "wizard")) {
             System.out.printf("Ork is being mind controlled and cannot attack\n");
 
             String interactionMessage = "Ork is being mind controlled and cannot attack\n";
             battleDocumentation.addBattleLog(interactionMessage);
-            return cardClass1;
+            return cardClass2;
         }
 
-        if (Objects.equals(cardClass1, "ork") && Objects.equals(cardClass2, "wizard")) {
+        if (Objects.equals(cardClass1, "wizard") && Objects.equals(cardClass2, "ork")) {
             System.out.printf("Ork is being mind controlled and cannot attack\n");
 
             String interactionMessage = "Ork is being mind controlled and cannot attack\n";
@@ -92,7 +92,7 @@ public class BattleRules {
             return cardClass2;
         }
 
-        if (Objects.equals(cardClass2, "waterSpell") && Objects.equals(cardClass1, "knight")) {
+        if (Objects.equals(cardClass1, "waterSpell") && Objects.equals(cardClass2, "knight")) {
             System.out.printf("Knight drowns due to his heavy armor\n");
 
             String interactionMessage = "Knight drowns due to his heavy armor\n";

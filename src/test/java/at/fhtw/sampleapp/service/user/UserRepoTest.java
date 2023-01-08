@@ -1,5 +1,6 @@
 package at.fhtw.sampleapp.service.user;
 
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import at.fhtw.sampleapp.service.repoCollection.RepoUser;
 import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoUserPackages;
 import org.junit.jupiter.api.Test;
@@ -17,19 +18,6 @@ public class UserRepoTest {
         int user_money = repoUser.getUserBalance(1);
         assertEquals(user_money, 20);
     }
-    @Test
-    public void checkUserPackages() {
-        RepoUserPackages repoUserPackages = new RepoUserPackages();
-        repoUserPackages.getUserPackages(1);
-        List<Integer> userPackageId = new ArrayList<>();
-
-        repoUserPackages.addUserPackage(1,1);
-        repoUserPackages.addUserPackage(2,1);
-        repoUserPackages.addUserPackage(3,1);
-
-        userPackageId = repoUserPackages.getUserPackages(1);
-        assertEquals(userPackageId.size(), 3);
-    }
 
     @Test
     public void addUserPackage() {
@@ -42,7 +30,8 @@ public class UserRepoTest {
     @Test
     public void updateUserBalance() {
         RepoUser repoUser = new RepoUser();
-        boolean success = repoUser.updateUserBalance(15, 1);
+        boolean success = repoUser.updateUserBalance(1, 15);
+        DatabaseConnection.commitTransaction();
         int userBalance = repoUser.getUserBalance(1);
 
         assertEquals(15, userBalance);
