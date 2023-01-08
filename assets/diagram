@@ -1,0 +1,104 @@
+classDiagram
+direction BT
+class card_deck_link {
+   varchar(255) card_id
+   integer deck_id
+}
+class card_package_link {
+   varchar(255) card_id
+   integer package_id
+}
+class card_stack_link {
+   varchar(255) card_id
+   integer stack_id
+}
+class cards {
+   varchar(255) card_name
+   integer card_damage
+   varchar(255) card_class
+   varchar(255) card_type
+   varchar(255) card_element
+   varchar(255) card_id
+}
+class decks {
+   integer user_id
+   varchar(255) card_1_id
+   varchar(255) card_2_id
+   varchar(255) card_3_id
+   varchar(255) card_4_id
+   integer deck_id
+}
+class games {
+   integer player_1
+   integer player_2
+   integer game_id
+}
+class packages {
+   boolean package_available
+   integer package_id
+}
+class player_card_link {
+   integer user_id
+   varchar card_id
+}
+class player_package_link {
+   integer user_id
+   integer package_id
+}
+class players {
+   varchar(255) user_username
+   varchar(255) user_password
+   integer user_money
+   boolean user_defaultdeck
+   varchar(255) user_bio
+   varchar(255) user_image
+   varchar(255) user_name
+   integer user_id
+}
+class rounds {
+   integer game_id
+   varchar round_logmessage
+   varchar card_1_id
+   integer round_id
+}
+class stacks {
+   integer user_id
+   integer stack_id
+}
+class stats {
+   integer stat_id
+   integer user_id
+   varchar(255) user_name
+   integer user_elo
+   integer user_wins
+   integer user_losses
+   integer user_draws
+}
+class trading {
+   integer user_id
+   varchar card_to_trade
+   varchar card_type
+   integer trading_minimum_damage
+   varchar trading_id
+}
+class waiting {
+   integer user_id
+   integer deck_id
+   boolean iswaiting
+}
+
+card_deck_link  -->  cards : card_id
+card_deck_link  -->  decks : deck_id
+card_package_link  -->  cards : card_id
+card_package_link  -->  packages : package_id
+card_stack_link  -->  cards : card_id
+card_stack_link  -->  stacks : stack_id
+decks  -->  players : user_id
+player_card_link  -->  cards : card_id
+player_card_link  -->  players : user_id
+player_package_link  -->  packages : package_id
+player_package_link  -->  players : user_id
+rounds  -->  games : game_id
+stacks  -->  players : user_id
+waiting  -->  decks : deck_id
+waiting  -->  players : user_id
