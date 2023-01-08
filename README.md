@@ -8,12 +8,12 @@ sudo docker stop swe1db
 sudo docker rm swe1db
 sudo docker run --name swe1db -e POSTGRES_USER=swe1user -e POSTGRES_PASSWORD=swe1pw -p 5432:5432 postgres
 ```
+Für die Datenspeicherung wird eine PostgresSQL Datenbank verwendet, die auf einem Docker Container läuft.
 
 # Backend Design
 
 ## Tabellen
 
-Für die Datenspeicherung wird eine PostgresSQL Datenbank verwendet, die auf einem Docker Container läuft.
 ![Datenbank Schema](assets/DatabaseImage.png "Tabellen.")
 
 ## Backend LogicStructure
@@ -38,6 +38,7 @@ Sollte etwas schiefgegangen sein, findet ein rollback statt.
 ![Datenbank Schema](assets/Logic.drawio.png "Tabellen.")
 
 # Unit Tests und Curl Script
+
 Ich habe entschieden Unit-Tests vor allem für die Spiellogik zu machen, da diese nicht vom CURL-Script abgedeckt werden.
 Da wird beispielsweise überprüft, ob der Schaden richtig kalkuliert wurde, oder der User nach einem Sieg die richtige Elo-Anzahl zurückbekommt.
 # Lessons learned
@@ -50,3 +51,13 @@ brauchen würde. Ich habe sehr oft große Teile des Backends um- bzw. neugeschri
 <br>
 Trotzdem habe ich vieles, vor allem was Planung betrifft, gelernt. Ich habe gelernt, dass man sich Zeit lassen soll, um guten Code zu schreiben. Wenn man etwas richtig macht,
 muss man es kein zweites Mal machen.
+
+# Aufwand
+
+Ich habe für das gesamte Projekt ungefähr 100-120 Stunden für dieses Projekt gebraucht. Davon waren wahrscheinlich 50 Stunden dem debugging gewidmet.
+
+# Version Control System
+Ich habe während meines Projekts Github für die Versionsverwaltung verwendet.
+<br>
+Das Semesterprojekt ist hier zu finden: 
+[GitHub Projekt Link](https://github.com/israeltshilumbaFHTW/MTCG)
