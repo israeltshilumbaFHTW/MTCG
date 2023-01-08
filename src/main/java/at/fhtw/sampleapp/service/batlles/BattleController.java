@@ -4,10 +4,12 @@ import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
+import at.fhtw.sampleapp.customExceptions.DBAccessException;
 import at.fhtw.sampleapp.customExceptions.PlayerAlreadyInQueueException;
 import at.fhtw.sampleapp.customExceptions.WaitTimeoutException;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.UserCardModel;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import at.fhtw.sampleapp.service.batlles.battleLogic.documentation.Documentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,13 +40,14 @@ public class BattleController extends Controller {
             Documentation documentation = Documentation.getDocumentation();
 
             //delete later:
-            if(!documentation.isListEmpty()) {
+            if (!documentation.isListEmpty()) {
                 String documentationJson = this.getObjectMapper().writeValueAsString(documentation);
 
                 String textMessage = documentation.getBattleLog().stream()
                         .map(Object::toString)
                         .collect(Collectors.joining("\n"));
 
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.OK,
                         ContentType.PLAIN_TEXT,
@@ -52,6 +55,7 @@ public class BattleController extends Controller {
                 );
             }
 
+            DatabaseConnection.commitTransaction();
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
@@ -69,6 +73,7 @@ public class BattleController extends Controller {
 
         } catch (NullPointerException e) {
             e.printStackTrace();
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,
@@ -77,6 +82,7 @@ public class BattleController extends Controller {
         } catch (WaitTimeoutException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.NO_CONTENT,
                     ContentType.JSON,
@@ -85,6 +91,8 @@ public class BattleController extends Controller {
         } catch (PlayerAlreadyInQueueException e) {
             e.printStackTrace();
 
+
+            DatabaseConnection.commitTransaction();
             return new Response(
                     HttpStatus.BAD_REQUEST,
                     ContentType.PLAIN_TEXT,
@@ -102,7 +110,7 @@ public class BattleController extends Controller {
             this.player2 = playerList.get(1);
         }
 
-        public synchronized String start()  {
+        public synchronized String start() {
             //check if battle has already taken place
             String winner = "player 1";
 

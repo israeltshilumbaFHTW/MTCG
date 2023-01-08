@@ -6,8 +6,10 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.customExceptions.CustomException;
+import at.fhtw.sampleapp.customExceptions.DBAccessException;
 import at.fhtw.sampleapp.customExceptions.UnexpectedErrorException;
 import at.fhtw.sampleapp.model.Trading;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -27,7 +29,7 @@ public class TradingController extends Controller {
         try {
             List<Trading> tradingList = this.tradingFacade.getTradingList();
 
-            if(tradingList.size() == 0) {
+            if (tradingList.size() == 0) {
 
                 return new Response(
                         HttpStatus.OK,
@@ -64,7 +66,9 @@ public class TradingController extends Controller {
 
         try {
             Trading trade = this.getObjectMapper().readValue(request.getBody(), Trading.class);
-            if(this.tradingFacade.addTrade(user_id, trade)) {
+            if (this.tradingFacade.addTrade(user_id, trade)) {
+
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
@@ -78,14 +82,16 @@ public class TradingController extends Controller {
             e.printStackTrace();
             System.err.println(e.getMessage());
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.BAD_REQUEST,
                     ContentType.JSON,
                     "{ \"message\" : \"Entry already exists\" }"
             );
-        } catch (NullPointerException e ) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,
@@ -93,6 +99,7 @@ public class TradingController extends Controller {
             );
         }
 
+        DatabaseConnection.rollbackTransaction();
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
@@ -108,7 +115,9 @@ public class TradingController extends Controller {
         try {
             //Todo: finsish that
             String trade_id = request.getPathParts().get(1);
-            if(this.tradingFacade.deleteTrade(user_id, trade_id)) {
+            if (this.tradingFacade.deleteTrade(user_id, trade_id)) {
+
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
@@ -118,6 +127,7 @@ public class TradingController extends Controller {
         } catch (CustomException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.BAD_REQUEST,
                     ContentType.JSON,
@@ -125,6 +135,7 @@ public class TradingController extends Controller {
             );
         }
 
+        DatabaseConnection.rollbackTransaction();
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
@@ -143,7 +154,9 @@ public class TradingController extends Controller {
             String tradeId = request.getPathParts().get(1);
             String tradeCard = this.getObjectMapper().readValue(request.getBody(), String.class);
 
-            if(this.tradingFacade.startTrade(tradeId, tradeCard, user_id)) {
+            if (this.tradingFacade.startTrade(tradeId, tradeCard, user_id)) {
+
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,
@@ -156,6 +169,8 @@ public class TradingController extends Controller {
         } catch (JsonProcessingException e) {
             System.err.println("JSON processing error");
             e.printStackTrace();
+
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
@@ -165,12 +180,15 @@ public class TradingController extends Controller {
             e.printStackTrace();
             System.err.println(e.getMessage());
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.BAD_REQUEST,
                     ContentType.JSON,
                     "{ \"message\" : \"" + e.getMessage() + "\" }"
             );
         }
+
+        DatabaseConnection.rollbackTransaction();
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,

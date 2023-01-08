@@ -5,6 +5,7 @@ import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Stats;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ScoreboardController extends Controller {
             List<Stats> scoreboard = scoreboardFacade.getScoreboard();
             String scoreboardJSON = this.getObjectMapper().writeValueAsString(scoreboard);
 
+            DatabaseConnection.commitTransaction();
             return new Response(
                     HttpStatus.CREATED,
                     ContentType.JSON,
@@ -30,6 +32,7 @@ public class ScoreboardController extends Controller {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,

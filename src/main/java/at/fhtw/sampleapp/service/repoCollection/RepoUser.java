@@ -276,12 +276,10 @@ public class RepoUser {
         try {
             PreparedStatement statement = this.connection.prepareStatement(
                     """ 
-                            SELECT cards.card_id, cards.card_name, cards.card_damage, cards.card_class, cards.card_type, cards.card_element
-                            FROM player_package_link
-                                LEFT JOIN card_package_link
-                                    ON player_package_link.package_id = card_package_link.package_id
-                                LEFT JOIN cards
-                                    ON card_package_link.card_id = cards.card_id
+                            SELECT c.card_id, card_name, card_damage, card_class, card_type, card_element
+                            FROM player_card_link
+                                LEFT JOIN cards c
+                                    on player_card_link.card_id = c.card_id
                             WHERE user_id = ?
                             ORDER BY card_damage DESC
                             LIMIT 4 OFFSET 0

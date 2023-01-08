@@ -1,7 +1,9 @@
 package at.fhtw.sampleapp.service.packages;
 
 import at.fhtw.sampleapp.controller.Controller;
+import at.fhtw.sampleapp.customExceptions.DBAccessException;
 import at.fhtw.sampleapp.model.Card;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
@@ -12,9 +14,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 import java.util.Objects;
 
-public class PackageController extends Controller{
+public class PackageController extends Controller {
 
     private PackageFacade packageFacade;
+
     public PackageController(PackageFacade packageFacade) {
         this.packageFacade = packageFacade;
     }
@@ -22,7 +25,8 @@ public class PackageController extends Controller{
     public Response addPackage(Request request) {
         List<Card> cardList;
         String authorisation = request.getHeaderMap().getHeader("Authorization");
-        if(!Objects.equals(authorisation, "Basic admin-mtcgToken")) {
+        if (!Objects.equals(authorisation, "Basic admin-mtcgToken")) {
+
             return new Response(
                     HttpStatus.FORBIDDEN,
                     ContentType.JSON,
@@ -30,9 +34,12 @@ public class PackageController extends Controller{
             );
         }
         try {
-            cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<Card>>(){});
+            cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<Card>>() {
+            });
 
             if (this.packageFacade.addPackage(cardList)) {
+
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
@@ -42,6 +49,8 @@ public class PackageController extends Controller{
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
+        DatabaseConnection.rollbackTransaction();
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,

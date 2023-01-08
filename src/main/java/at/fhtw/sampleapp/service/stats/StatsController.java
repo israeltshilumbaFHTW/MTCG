@@ -6,6 +6,7 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Stats;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -21,6 +22,7 @@ public class StatsController extends Controller {
     public Response getUserStats(Request request) {
 
         if(request.getHeaderMap().getHeader("Authorization") == null) {
+
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,
@@ -37,6 +39,7 @@ public class StatsController extends Controller {
             Stats userStats = this.statsFacade.getUserStats(user_id);
             String userStatsJSON = this.getObjectMapper().writeValueAsString(userStats);
 
+            DatabaseConnection.commitTransaction();
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
@@ -46,6 +49,7 @@ public class StatsController extends Controller {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,

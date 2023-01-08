@@ -74,13 +74,12 @@ public class RepoPackages {
         try {
             PreparedStatement statement = connection.prepareStatement(
                     """
-                        UPDATE packages
-                        SET package_available = ?
+                        DELETE 
+                        FROM packages
                         WHERE package_id = ?
                         """
             );
-            statement.setBoolean(1, false);
-            statement.setInt(2, package_id);
+            statement.setInt(1, package_id);
             statement.execute();
 
         } catch (SQLException e) {

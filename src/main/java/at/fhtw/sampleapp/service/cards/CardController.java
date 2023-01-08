@@ -6,6 +6,7 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Card;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -30,6 +31,7 @@ public class CardController extends Controller {
 
             String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
 
+            DatabaseConnection.commitTransaction();
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
@@ -47,6 +49,7 @@ public class CardController extends Controller {
         } catch (NullPointerException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,

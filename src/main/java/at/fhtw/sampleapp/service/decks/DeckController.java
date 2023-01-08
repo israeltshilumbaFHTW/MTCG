@@ -7,17 +7,21 @@ import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.customExceptions.CardNotOwnedException;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.model.Card;
+import at.fhtw.sampleapp.service.DatabaseConnection;
 import at.fhtw.sampleapp.service.UserAuthorizationMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Map;
 
 public class DeckController extends Controller {
     private DeckFacade deckFacade;
 
-    public DeckController(DeckFacade deckFacade) {this.deckFacade = deckFacade;}
+    public DeckController(DeckFacade deckFacade) {
+        this.deckFacade = deckFacade;
+    }
 
     public Response changeCurrentDeck(Request request) {
 
@@ -27,9 +31,12 @@ public class DeckController extends Controller {
             String authorization = request.getHeaderMap().getHeader("Authorization");
             int user_id = userAuthorization.get(authorization); //should be null if user doesn't exist
             //cardIds
-            List<String> cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<String>>(){});
+            List<String> cardList = this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<String>>() {
+            });
 
             if (cardList.size() != 4) {
+
+                DatabaseConnection.rollbackTransaction();
                 return new Response(
                         HttpStatus.BAD_REQUEST,
                         ContentType.JSON,
@@ -37,6 +44,8 @@ public class DeckController extends Controller {
                 );
             }
             if (this.deckFacade.updateDeck(user_id, cardList)) {
+
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
@@ -47,6 +56,7 @@ public class DeckController extends Controller {
             e.printStackTrace();
         } catch (NullPointerException e) {
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.FORBIDDEN,
                     ContentType.JSON,
@@ -55,6 +65,7 @@ public class DeckController extends Controller {
         } catch (CardNotOwnedException e) {
             e.printStackTrace();
 
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,
@@ -62,12 +73,14 @@ public class DeckController extends Controller {
             );
         }
 
+        DatabaseConnection.rollbackTransaction();
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
                 "{\"message\" : \"Could not edit deck\"}"
         );
     }
+
     public Response getCardsInUserDeck(Request request) {
         try {
             //ToDo:add Authorization
@@ -77,12 +90,12 @@ public class DeckController extends Controller {
             int user_id = userAuthorization.get(authorization); //should be null if user doesn't exist
 
 
-
             //check if defaultDeck is true
             if (deckFacade.getDefaultDeckBoolean(user_id)) {
                 List<Card> cardList = this.deckFacade.getDefaultDeck(user_id);
                 String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
 
+                DatabaseConnection.commitTransaction();
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,
@@ -93,6 +106,7 @@ public class DeckController extends Controller {
             List<Card> cardList = this.deckFacade.getDeck(user_id);
             String userCardJSON = this.getObjectMapper().writeValueAsString(cardList);
 
+            DatabaseConnection.commitTransaction();
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
@@ -102,6 +116,8 @@ public class DeckController extends Controller {
         } catch (JsonProcessingException e) {
             System.err.println("JSON processing error");
             e.printStackTrace();
+
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
@@ -109,6 +125,8 @@ public class DeckController extends Controller {
             );
         } catch (NullPointerException e) {
             e.printStackTrace();
+
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,
