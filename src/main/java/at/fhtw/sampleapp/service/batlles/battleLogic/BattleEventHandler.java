@@ -46,6 +46,10 @@ public class BattleEventHandler {
         player1CardDamage = player1CardDamage * battleRules.getEffect(player1Card, player2Card);
         player2CardDamage = player2CardDamage * battleRules.getEffect(player2Card, player1Card);
 
+
+        //Critical hit and evade chance
+
+
         if(player1CardDamage > player2CardDamage) {
             //remove Card from player 2
             removeLoserCard(player2Card, 2);

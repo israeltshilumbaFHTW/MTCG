@@ -37,6 +37,14 @@ Sollte etwas schiefgegangen sein, findet ein rollback statt.
 
 ![Datenbank Schema](assets/Logic.drawio.png "Tabellen.")
 
+# Unique Feature
+Ich habe insgesamt drei Fähigkeiten hinzugefügt.
+- Dragon: Ein Würfel wird geworfen. Der Drache hat eine (number) prozentige Chance seinen Schaden zu ver(number)fachen. Wenn das aber nicht gelingt, verliert er (number) Lebenspunkte. 
+- Goblin: Alle Goblins sind in der Lage das Element ihres gegenübers zu kopieren.
+- Wizard: Ein Würfel wird geworfen. Dabei hat der Zauberer die Chance zufällig das Element zu wechseln.
+
+Diese Änderungen sind dazu da, um unentschieden schwieriger zu machen.
+
 # Unit Tests und Curl Script
 
 Ich habe entschieden Unit-Tests vor allem für die Spiellogik zu machen, da diese nicht vom CURL-Script abgedeckt werden.
@@ -54,7 +62,7 @@ muss man es kein zweites Mal machen.
 
 # Aufwand
 
-Ich habe für das gesamte Projekt ungefähr 100-120 Stunden für dieses Projekt gebraucht. Davon waren wahrscheinlich 50 Stunden dem debugging gewidmet.
+Ich habe für das gesamte Projekt ungefähr 100-120 Stunden für dieses Projekt gebraucht. Davon waren wahrscheinlich 50 Stunden dem Debugging gewidmet.
 
 # Version Control System
 Ich habe während meines Projekts Github für die Versionsverwaltung verwendet.

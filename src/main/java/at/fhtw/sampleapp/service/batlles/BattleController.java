@@ -65,6 +65,8 @@ public class BattleController extends Controller {
         } catch (JsonProcessingException e) {
             System.err.println("JSON processing error");
             e.printStackTrace();
+
+            DatabaseConnection.rollbackTransaction();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,

@@ -31,10 +31,10 @@ public class Game {
         documentation.addBattleLog("Start Game\n");
         //check match up
         while(true) {
-
+            documentation.addBattleLog("#####################");
             battleEventHandler.incrementRound();
             System.out.printf("Round %d\n", battleEventHandler.getRounds());
-            String roundDocMessage = "Round " + battleEventHandler.getRounds();
+            String roundDocMessage = "Round " + battleEventHandler.getRounds() + "\n";
 
             documentation.addBattleLog(roundDocMessage);
 
@@ -45,8 +45,14 @@ public class Game {
             Card player2Card = player2.getCardList().get(randomIndex);
 
             System.out.printf("%s vs. %s \n", player1Card.getCard_name(), player2Card.getCard_name());
-            String cardNameDocMessage = player1Card.getCard_name() + "vs." + player2Card.getCard_name();
+            String cardNameDocMessage = player1Card.getCard_name() + " vs. " + player2Card.getCard_name();
             documentation.addBattleLog(cardNameDocMessage);
+
+            //add own rules
+            BattleRules battleRules = new BattleRules();
+            List<Card> cardList = battleRules.buffCard(player1Card, player2Card);
+            player1Card = cardList.get(0);
+            player2Card = cardList.get(1);
 
             int winner = battleEventHandler.getRoundWinner(player1Card, player2Card);
             if (winner == 1) {
@@ -97,6 +103,7 @@ public class Game {
                 System.out.printf("Match ended in a Draw\n");
 
                 String matchEndsInDrawMessage = "Match ended in a Draw\n";
+                documentation.addBattleLog(matchEndsInDrawMessage);
 
                 handlePostGame(0);
                 return "Match ended in a Draw";
