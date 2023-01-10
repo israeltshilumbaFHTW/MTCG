@@ -17,6 +17,13 @@ public class Stats {
         this.stats_draws = stats_draws;
     }
 
+    public int getWinRate() {
+        if(this.stats_wins == 0) {
+            return 0;
+        }
+        int winRate = this.stats_wins * 100 / (this.stats_wins + this.stats_losses + stats_draws);
+        return winRate;
+    }
     public int getStats_elo() {
         return stats_elo;
     }
