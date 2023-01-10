@@ -50,7 +50,9 @@ Kommt aber ein anderer Spieler dazu, wird das Game
 mit der Methode ```getWinner(int user_id, RepoWaiting repoWaiting) ``` gestartet.
 
 ### ```getWinner():```
-Diese Methode "getWinner" hat das Ziel, den Gewinner eines Kartenspiels zwischen zwei Spielern zu bestimmen. Hier ist der Ablauf
+Die Methode hat das Ziel, den Gewinner zwischen zwei Spielern zu bestimmen.
+
+Ablauf:
 
     - Eine Liste der wartenden Spieler wird aus dem RepoWaiting Objekt abgerufen
     - Ein neues PreGameRoom Objekt wird erstellt und die user_ids der beiden Spieler werden als Argumente übergeben
