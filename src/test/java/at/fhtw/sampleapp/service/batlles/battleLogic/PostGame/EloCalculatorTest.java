@@ -28,7 +28,7 @@ class EloCalculatorTest {
         int player2Elo = 100;
         boolean player1Won = true;
 
-        //if Elo difference is too big: Player1 doesnt gain any Elo, player 2 loses 1 elo
+        //if Elo difference is too big: Player1 doesn't gain any Elo, player 2 loses 1 elo
 
         List<Integer> eloList = EloCalculator.updateEloRatings(player1Elo, player2Elo, player1Won);
 

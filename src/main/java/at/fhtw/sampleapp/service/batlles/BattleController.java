@@ -88,7 +88,7 @@ public class BattleController extends Controller {
             return new Response(
                     HttpStatus.NO_CONTENT,
                     ContentType.JSON,
-                    "{ \"message\" : \"not opponent found\" }"
+                    "{ \"message\" : \"no opponent found\" }"
             );
         } catch (PlayerAlreadyInQueueException e) {
             e.printStackTrace();
@@ -103,20 +103,4 @@ public class BattleController extends Controller {
         }
     }
 
-    public static class Game {
-        private UserCardModel player1;
-        private UserCardModel player2;
-
-        public Game(List<UserCardModel> playerList) {
-            this.player1 = playerList.get(0);
-            this.player2 = playerList.get(1);
-        }
-
-        public synchronized String start() {
-            //check if battle has already taken place
-            String winner = "player 1";
-
-            return winner;
-        }
-    }
 }

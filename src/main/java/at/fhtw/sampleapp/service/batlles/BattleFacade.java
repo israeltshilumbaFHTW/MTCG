@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BattleFacade {
-    private static final int WAITING_TIME_SECONDS = 10;
+    private static final int WAITING_TIME_SECONDS = 5;
     private static final int ONE_SECOND = 1000;
     private volatile boolean endFlag = false;
 
@@ -28,12 +28,15 @@ public class BattleFacade {
                     - put him in the waiting Room
                     - add current player
             */
+            endFlag = false;
             int deck_id = repoDecks.getDeckIdWithUserId(user_id);
             repoWaiting.addToWaitingRoom(user_id, deck_id);
 
             try {
                 waitingRoom();
             } catch (InterruptedException e) {
+
+                repoWaiting.emptyWaiting();
                 e.printStackTrace();
                 System.err.println("waiting Room Exception");
             }
@@ -44,6 +47,8 @@ public class BattleFacade {
                 return "Battle already ended";
             }
             if (waitingPlayerList.size() == 1 ) { //no player was added
+
+                repoWaiting.emptyWaiting();
                 return "NO OPPONENT AVAILABLE";
                 //throw new WaitTimeoutException("No Opponent Available");
                 //Todo: rollback connection
@@ -73,9 +78,6 @@ public class BattleFacade {
             repoWaiting.addToWaitingRoom(user_id, repoDecks.getDeckIdWithUserId(user_id));
             String winner = getWinner(user_id, repoWaiting, repoDecks);
 
-            if(Objects.equals("Player 1 wins", winner)) {
-
-            }
             return winner;
         }
     }
@@ -98,6 +100,11 @@ public class BattleFacade {
         while (timerSeconds < WAITING_TIME_SECONDS) {
             Thread.sleep(ONE_SECOND);
             timerSeconds = timerSeconds + 1;
+
+            if(endFlag) {
+                break;
+            }
+
         }
     }
 

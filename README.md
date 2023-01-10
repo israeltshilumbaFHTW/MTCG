@@ -37,6 +37,33 @@ Sollte etwas schiefgegangen sein, findet ein rollback statt.
 
 ![Datenbank Schema](assets/Logic.drawio.png "Tabellen.")
 
+# Concurrent Battle
+In der Battle Facade findet die gesamte Verwaltung des Battles statt. Die Funktion 
+```initBattle(int user_id)``` ist der Startpunkt. Die Methode schaut zuerst, wer in der Warteschlange
+wartet. Wenn keine Spieler warten, schaut die Funktion, ob der Spieler bereits in der Queue ist. Sollte 
+er noch nicht in der Queue sein, wird er eingefügt und wartet im "waiting room". Der Thread wartet für 
+eine gewisse Zeit, bis ein anderer Spieler dazukommt. 
+
+Sollte niemand hinzugefügt werden, wird der Kampf
+beendet und der Spieler von der Warteliste entfernt. 
+Kommt aber ein anderer Spieler dazu, wird das Game
+mit der Methode ```getWinner(int user_id, RepoWaiting repoWaiting) ``` gestartet.
+
+### ```getWinner():```
+Diese Methode "getWinner" hat das Ziel, den Gewinner eines Kartenspiels zwischen zwei Spielern zu bestimmen. Hier ist der Ablauf
+
+    - Eine Liste der wartenden Spieler wird aus dem RepoWaiting Objekt abgerufen
+    - Ein neues PreGameRoom Objekt wird erstellt und die user_ids der beiden Spieler werden als Argumente übergeben
+    - Es wird eine Liste von UserCardModel Objekten abgerufen, die die Karten und ID des jeweiligen Spielers enthalten.
+    - Es wird ein neues Game-Objekt erstellt und die Karten der beiden Spieler werden übergeben.
+    - Die Methode startGame() wird aufgerufen und es wird ein String zurückgegeben, der den Namen des Gewinners enthält.
+    - Bei einem Unentschieden, wird "draw" zurückgegeben
+    - Die Methode emptyWaiting() wird aufgerufen, um die Liste der wartenden Spieler zu leeren
+    - Der endFlag wird auf true gesetzt und die Methode gibt den Namen des Gewinners zurück.
+
+
+
+
 # Unique Feature
 Ich habe insgesamt drei Fähigkeiten hinzugefügt.
 - Dragon: Ein Würfel wird geworfen. Der Drache hat eine (number) prozentige Chance seinen Schaden zu ver(number)fachen. Wenn das aber nicht gelingt, verliert er (number) Lebenspunkte. 

@@ -49,6 +49,10 @@ public class Game {
             documentation.addBattleLog(cardNameDocMessage);
 
             //add own rules
+            //if removed, battle in curl should always end in a draw
+            /*
+
+             */
             BattleRules battleRules = new BattleRules();
             List<Card> cardList = battleRules.buffCard(player1Card, player2Card);
             player1Card = cardList.get(0);
@@ -92,11 +96,11 @@ public class Game {
                 System.out.printf("Player 2 is out of Cards\n");
                 System.out.printf("Player 1 wins\n");
 
-                String player2outOfCardMessage = "Player 1 is out of Cards\n Player 2 wins\n";
+                String player2outOfCardMessage = "Player 2 is out of Cards\n Player 1 wins\n";
                 documentation.addBattleLog(player2outOfCardMessage);
 
                 handlePostGame(1);
-                return "Winner 1 wins";
+                return "Player 1 wins";
             }
 
             if(battleEventHandler.getRounds() >= 100) {
