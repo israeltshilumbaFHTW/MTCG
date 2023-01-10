@@ -18,13 +18,16 @@ curl -X POST http://localhost:10001/users --header "Content-Type: application/js
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 echo should fail:
 curl -X POST http://localhost:10001/users --header "Content-Type: application/json" -d "{\"Username\":\"kienboec\", \"Password\":\"daniel\"}" | jq .
 echo -e "\n"
 curl -X POST http://localhost:10001/users --header "Content-Type: application/json" -d "{\"Username\":\"kienboec\", \"Password\":\"different\"}" | jq .
 echo -e "\n"
 echo -e "\n"
-
+read line
+clear
 # --------------------------------------------------
 echo "2) Login Users"
 read line
@@ -35,11 +38,15 @@ echo -e "\n"
 curl -X POST http://localhost:10001/sessions --header "Content-Type: application/json" -d "{\"Username\":\"admin\",    \"Password\":\"istrator\"}" | jq .
 echo -e "\n"
 
+read line
+clear
 echo should fail:
 curl -X POST http://localhost:10001/sessions --header "Content-Type: application/json" -d "{\"Username\":\"kienboec\", \"Password\":\"different\"}" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "3) create packages (done by \"admin\")"
 read line
@@ -57,6 +64,8 @@ curl -X POST http://localhost:10001/packages --header "Content-Type: application
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "4) acquire packages kienboec"
 read line
@@ -68,11 +77,15 @@ curl -X POST http://localhost:10001/transactions/packages --header "Content-Type
 echo -e "\n"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "" | jq .
 echo -e "\n"
+read line
+clear
 echo "should fail (no money):"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "5) acquire packages altenhof"
 read line
@@ -80,11 +93,15 @@ curl -X POST http://localhost:10001/transactions/packages --header "Content-Type
 echo -e "\n"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d "" | jq .
 echo -e "\n"
+read line
+clear
 echo "should fail (no package):"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d "" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "6) add new packages"
 read line
@@ -96,6 +113,8 @@ curl -X POST http://localhost:10001/packages --header "Content-Type: application
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "7) acquire newly created packages altenhof"
 read line
@@ -103,22 +122,30 @@ curl -X POST http://localhost:10001/transactions/packages --header "Content-Type
 echo -e "\n"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d "" | jq .
 echo -e "\n"
+read line
+clear
 echo "should fail (no money):"
 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d "" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "8) show all acquired cards kienboec"
 read line
 curl -X GET http://localhost:10001/cards --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
+read line
+clear
 echo "should fail (no token)"
 curl -X GET http://localhost:10001/cards | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "9) show all acquired cards altenhof"
 read line
@@ -126,16 +153,22 @@ curl -X GET http://localhost:10001/cards --header "Authorization: Basic altenhof
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "10) show unconfigured deck"
 echo "Shows first four strongest cards"
 read line
 curl -X GET http://localhost:10001/deck --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
+read line
+clear
 curl -X GET http://localhost:10001/deck --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "11) configure deck"
 read line
@@ -149,6 +182,8 @@ echo -e "\n"
 curl -X GET http://localhost:10001/deck --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
+read line
+clear
 echo should fail and show original from before:
 curl -X PUT http://localhost:10001/deck --header "Content-Type: application/json" --header "Authorization: Basic altenhof-mtcgToken" -d "[\"845f0dc7-37d0-426e-994e-43fc3ac83c08\", \"99f8f8dc-e25e-4a95-aa2c-782823f36e2a\", \"e85e3976-7c86-4d06-9a80-641c2019a79f\", \"171f6076-4eb5-4a7d-b3f2-2d650cc3d237\"]" | jq .
 echo -e "\n"
@@ -160,15 +195,21 @@ curl -X PUT http://localhost:10001/deck --header "Content-Type: application/json
 echo -e "\n"
 
 
+read line
+clear
 # --------------------------------------------------
 echo "12) show configured deck"
 read line
 curl -X GET http://localhost:10001/deck --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
+read line
+clear
 curl -X GET http://localhost:10001/deck --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "13) show configured deck different representation"
 read line
@@ -176,11 +217,15 @@ echo kienboec
 curl -X GET http://localhost:10001/deck?format=plain --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
+read line
+clear
 echo altenhof
 curl -X GET http://localhost:10001/deck?format=plain --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "14) edit user data"
 read line
@@ -198,6 +243,8 @@ echo -e "\n"
 curl -X GET http://localhost:10001/users/altenhof --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
+read line
+clear
 echo should fail:
 curl -X GET http://localhost:10001/users/altenhof --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
@@ -211,15 +258,17 @@ curl -X GET http://localhost:10001/users/someGuy  --header "Authorization: Basic
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "15) stats"
 read line
 curl -X GET http://localhost:10001/stats --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
-curl -X GET http://localhost:10001/stats --header "Authorization: Basic altenhof-mtcgToken" | jq .
-echo -e "\n"
-echo -e "\n"
 
+
+read line
+clear
 # --------------------------------------------------
 echo "16) scoreboard"
 read line
@@ -227,6 +276,8 @@ curl -X GET http://localhost:10001/score --header "Authorization: Basic kienboec
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "17) battle"
 read line
@@ -237,17 +288,22 @@ read line
 #curl -X POST http://localhost:10001/battles --header "Authorization: Basic altenhof-mtcgToken";
 #sleep 5
 
+read line
+clear
 # --------------------------------------------------
 echo "18) Stats"
 read line
-echo kienboec
-curl -X GET http://localhost:10001/stats --header "Authorization: Basic kienboec-mtcgToken" | jq .
+echo "altenhof:"
 echo -e "\n"
-echo altenhof
 curl -X GET http://localhost:10001/stats --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
-echo -e "\n"
 
+echo "kienboeck:"
+echo -e "\n"
+curl -X GET http://localhost:10001/stats --header "Authorization: Basic kienboec-mtcgToken" | jq .
+echo -e "\n"
+read line
+clear
 # --------------------------------------------------
 echo "19) scoreboard"
 read line
@@ -255,35 +311,49 @@ curl -X GET http://localhost:10001/score --header "Authorization: Basic kienboec
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "20) trade"
 read line
 echo check trading deals
 curl -X GET http://localhost:10001/tradings --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
+read line
+clear
 echo create trading deal
 curl -X POST http://localhost:10001/tradings --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "{\"Id\": \"6cd85277-4590-49d4-b0cf-ba0a921faad0\", \"CardToTrade\": \"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\", \"Type\": \"monster\", \"MinimumDamage\": 15}" | jq .
 echo -e "\n"
+read line
+clear
 echo check trading deals
 curl -X GET http://localhost:10001/tradings --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
 curl -X GET http://localhost:10001/tradings --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
+read line
+clear
 echo delete trading deals
 curl -X DELETE http://localhost:10001/tradings/6cd85277-4590-49d4-b0cf-ba0a921faad0 --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
 echo -e "\n"
 
+read line
+clear
 # --------------------------------------------------
 echo "21) check trading deals"
 read line
 curl -X GET http://localhost:10001/tradings  --header "Authorization: Basic kienboec-mtcgToken" | jq .
 echo -e "\n"
 
+read line
+clear
 echo "Add trade"
 read line
 curl -X POST http://localhost:10001/tradings --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "{\"Id\": \"6cd85277-4590-49d4-b0cf-ba0a921faad0\", \"CardToTrade\": \"1cb6ab86-bdb2-47e5-b6e4-68c5ab389334\", \"Type\": \"monster\", \"MinimumDamage\": 15}" | jq .
 
+read line
+clear
 echo "check trading deals"
 read line
 curl -X GET http://localhost:10001/tradings  --header "Authorization: Basic kienboec-mtcgToken" | jq .
@@ -296,6 +366,32 @@ read line
 curl -X POST http://localhost:10001/tradings/6cd85277-4590-49d4-b0cf-ba0a921faad0 --header "Content-Type: application/json" --header "Authorization: Basic kienboec-mtcgToken" -d "\"4ec8b269-0dfa-4f97-809a-2c63fe2a0025\"" | jq .
 echo -e "\n"
 
+read line
+clear
+echo "check if cards are owned"
+read line
+echo -e "\n"
+echo "kienboeck should own 1cb6ab86-bdb2-47e5-b6e4-68c5ab389334"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/1cb6ab86-bdb2-47e5-b6e4-68c5ab389334 --header "Authorization: Basic kienboec-mtcgToken" | jq .
+echo -e "\n"
+echo "kienboeck should not own 951e886a-0fbf-425d-8df5-af2ee4830d85"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/951e886a-0fbf-425d-8df5-af2ee4830d85 --header "Authorization: Basic kienboec-mtcgToken" | jq .
+read line
+clear
+echo -e "\n"
+echo "altenhof should own 951e886a-0fbf-425d-8df5-af2ee4830d85"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/951e886a-0fbf-425d-8df5-af2ee4830d85 --header "Authorization: Basic altenhof-mtcgToken" | jq .
+echo "altenhof should not own 1cb6ab86-bdb2-47e5-b6e4-68c5ab389334"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/1cb6ab86-bdb2-47e5-b6e4-68c5ab389334 --header "Authorization: Basic altenhof-mtcgToken" | jq .
+
+#---------------------------------------------------
+read line
+clear
+
 echo "try to trade"
 read line
 echo -e "\n"
@@ -306,6 +402,29 @@ echo -e "\n"
 curl -X GET http://localhost:10001/tradings --header "Authorization: Basic altenhof-mtcgToken" | jq .
 echo -e "\n"
 
+#---------------------------------------------------
+read line
+clear
+
+echo "check if card were received"
+read line
+echo -e "\n"
+echo "kienboeck should not own 1cb6ab86-bdb2-47e5-b6e4-68c5ab389334"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/1cb6ab86-bdb2-47e5-b6e4-68c5ab389334 --header "Authorization: Basic kienboec-mtcgToken" | jq .
+echo -e "\n"
+echo "kienboeck should own 951e886a-0fbf-425d-8df5-af2ee4830d85"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/951e886a-0fbf-425d-8df5-af2ee4830d85 --header "Authorization: Basic kienboec-mtcgToken" | jq .
+#---------------------------------------------------
+read line
+clear
+echo "altenhof should not own 951e886a-0fbf-425d-8df5-af2ee4830d85"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/951e886a-0fbf-425d-8df5-af2ee4830d85 --header "Authorization: Basic altenhof-mtcgToken" | jq .
+echo "altenhof should own 1cb6ab86-bdb2-47e5-b6e4-68c5ab389334"
+echo -e "\n"
+curl -X GET http://localhost:10001/cards/1cb6ab86-bdb2-47e5-b6e4-68c5ab389334 --header "Authorization: Basic altenhof-mtcgToken" | jq .
 # --------------------------------------------------
 echo end...
 
