@@ -11,44 +11,26 @@ public class UserService implements Service {
     private final UserController userController;
 
     public UserService() {
-        this.userController = new UserController(new UserDAL());
+        this.userController = new UserController(new UserFacade());
     }
 
     @Override
     public Response handleRequest(Request request) {
-//Bug Fixing
-       /*
-        if (request.getMethod() == Method.GET &&
-            request.getPathParts().size() > 1) {
-           //successful database query
-            return this.userController.getUser(request.getPathParts().get(1));
-        } else if (request.getMethod() == Method.GET) {
-            return this.userController.getUser();
-        } else if (request.getMethod() == Method.POST) {
-            //TODO: Post Method
-            return null;
-            //return this.userController.
-        }
-*/
         try {
 
             if (request.getMethod() == Method.GET &&
                     request.getPathParts().size() > 1) {
                 //successful database query
-                return this.userController.getUser(request.getPathParts().get(1));
+                System.out.println("GET user/username");
+                return this.userController.getUser(request);
             } else if (request.getMethod() == Method.GET) {
-                return this.userController.getUser();
+                return this.userController.getUsers();
             } else if (request.getMethod() == Method.POST) {
 
                 //TODO: Post Method
-                try {
-
                     return this.userController.postUser(request);
-
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-                //return this.userController.
+            } else if (request.getMethod() == Method.PUT) {
+                return this.userController.updateUser(request);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

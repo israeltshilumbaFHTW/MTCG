@@ -1,0 +1,234 @@
+package at.fhtw.sampleapp.db;
+
+import at.fhtw.sampleapp.service.DatabaseConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class DbInit {
+    private static Connection connection = DatabaseConnection.getDatabaseConnection();
+
+    public void initDB() {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    """
+                            DROP TABLE IF EXISTS player_card_link;
+                            DROP TABLE IF EXISTS trading;
+                            DROP TABLE IF EXISTS rounds;
+                            DROP TABLE IF EXISTS waiting;
+                            DROP TABLE IF EXISTS player_package_link;
+                            DROP TABLE IF EXISTS card_deck_link;
+                            DROP TABLE IF EXISTS card_stack_link;
+                            DROP TABLE IF EXISTS card_package_link;
+                            DROP TABLE IF EXISTS packages;
+                            DROP TABLE IF EXISTS cards;
+                            DROP TABLE IF EXISTS stacks;
+                            DROP TABLE IF EXISTS decks;
+                            DROP TABLE IF EXISTS stats;
+                            DROP TABLE IF EXISTS players;
+                            DROP TABLE IF EXISTS games;
+                                                        
+                            CREATE TABLE players
+                            (
+                                user_id          SERIAL,
+                                user_username    varchar(255) NOT NULL,
+                                user_password    varchar(255) NOT NULL,
+                                user_money       int          NOT NULL,
+                                user_defaultDeck boolean      NOT NULL,
+                                user_bio         varchar(255),
+                                user_image       varchar(255),
+                                user_name        varchar(255),
+                                                        
+                                PRIMARY KEY (user_id)
+                            );
+                                                        
+                            CREATE TABLE stacks
+                            (
+                                stack_id int NULL,
+                                user_id  int NOT NULL,
+                                PRIMARY KEY (stack_id),
+                                                        
+                                CONSTRAINT fk_player
+                                    FOREIGN KEY (user_id)
+                                        REFERENCES players (user_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            CREATE TABLE decks
+                            (
+                                deck_id   SERIAL,
+                                user_id   int NOT NULL,
+                                card_1_id varchar(255),
+                                card_2_id varchar(255),
+                                card_3_id varchar(255),
+                                card_4_id varchar(255),
+                                                        
+                                PRIMARY KEY (deck_id),
+                                                        
+                                CONSTRAINT fk_player
+                                    FOREIGN KEY (user_id)
+                                        REFERENCES players (user_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            CREATE TABLE cards
+                            (
+                                card_id      varchar(255) NOT NULL,
+                                card_name    varchar(255) NOT NULL,
+                                card_damage  int          NOT NULL,
+                                card_class   varchar(255) NOT NULL,
+                                card_type    varchar(255) NOT NULL,
+                                card_element varchar(255) NOT NULL,
+                                PRIMARY KEY (card_id)
+                                                        
+                            );
+                                                        
+                            CREATE TABLE packages
+                            (
+                                package_id        int     NOT NULL,
+                                --jedes Package existiert nur einmail
+                                package_available boolean NOT NULL,
+                                PRIMARY KEY (package_id)
+                            );
+                                                        
+                            -- ToDo: card n:m deck
+                            CREATE TABLE card_deck_link
+                            (
+                                card_id varchar(255) NOT NULL,
+                                deck_id int          NOT NULL,
+                                                        
+                                CONSTRAINT fk_card_id
+                                    FOREIGN KEY (card_id)
+                                        REFERENCES cards (card_id)
+                                        ON DELETE CASCADE,
+                                                        
+                                CONSTRAINT fk_deck_id
+                                    FOREIGN KEY (deck_id)
+                                        REFERENCES decks (deck_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            CREATE TABLE card_stack_link
+                            (
+                                card_id  varchar(255) NOT NULL,
+                                stack_id int          NOT NULL,
+                                                        
+                                CONSTRAINT fk_card_id
+                                    FOREIGN KEY (card_id)
+                                        REFERENCES cards (card_id)
+                                        ON DELETE CASCADE,
+                                                        
+                                CONSTRAINT fk_stack_id
+                                    FOREIGN KEY (stack_id)
+                                        REFERENCES stacks (stack_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                                                        
+                            CREATE TABLE card_package_link
+                            (
+                                card_id    varchar(255) NOT NULL,
+                                package_id int          NOT NULL,
+                                                        
+                                CONSTRAINT fk_card_id
+                                    FOREIGN KEY (card_id)
+                                        REFERENCES cards (card_id)
+                                        ON DELETE CASCADE,
+                                CONSTRAINT fk_package_id
+                                    FOREIGN KEY (package_id)
+                                        REFERENCES packages (package_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            CREATE TABLE player_package_link
+                            (
+                                user_id    int NOT NULL,
+                                package_id int NOT NULL,
+                                                        
+                                CONSTRAINT fk_user_id
+                                    FOREIGN KEY (user_id)
+                                        REFERENCES players (user_id)
+                                        ON DELETE CASCADE,
+                                CONSTRAINT fk_package_id
+                                    FOREIGN KEY (package_id)
+                                        REFERENCES packages (package_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            CREATE TABLE stats
+                            (
+                                stat_id     SERIAL,
+                                user_id     int NOT NULL,
+                                user_name   varchar(255),
+                                user_elo    int NOT NULL,
+                                user_wins   int NOT NULL,
+                                user_losses int NOT NULL,
+                                user_draws  int NOT NULL,
+                                                        
+                                UNIQUE(user_id)
+                            );
+                                                        
+                            CREATE TABLE waiting
+                            (
+                                user_id   int  NOT NULL UNIQUE,
+                                deck_id   int  NOT NULL,
+                                isWaiting bool NOT NULL,
+                                                        
+                                CONSTRAINT fk_player
+                                    FOREIGN KEY (user_id)
+                                        REFERENCES players (user_id)
+                                        ON DELETE CASCADE,
+                                                        
+                                CONSTRAINT fk_deck
+                                    FOREIGN KEY (deck_id)
+                                        REFERENCES decks (deck_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            CREATE TABLE games
+                            (
+                                game_id  SERIAL PRIMARY KEY,
+                                player_1 INT NOT NULL,
+                                player_2 INT NOT NULL
+                                                        
+                            );
+                                                        
+                            CREATE TABLE rounds
+                            (
+                                round_id         SERIAL PRIMARY KEY,
+                                game_id          INT     NOT NULL,
+                                round_logMessage VARCHAR NOT NULL,
+                                card_1_id        VARCHAR NOT NULL,
+                                                        
+                                CONSTRAINT fk_games
+                                    FOREIGN KEY (game_id)
+                                        REFERENCES games (game_id)
+                                        ON DELETE CASCADE
+                            );
+                                                        
+                            create TABLE trading (
+                                user_id INT NOT NULL,
+                                trading_id VARCHAR NOT NULL PRIMARY KEY,
+                                card_to_trade VARCHAR NOT NULL,
+                                card_type VARCHAR NOT NULL,
+                                trading_minimum_damage INT NOT NULL
+                            );
+                                                        
+                            create TABLE player_card_link(
+                                user_id INT NOT NULL REFERENCES players(user_id),
+                                card_id VARCHAR UNIQUE NOT NULL REFERENCES cards(card_id)
+                            );
+                                                        
+                            """
+            );
+            statement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error initializing DB");
+        }
+
+    }
+
+}
