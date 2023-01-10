@@ -78,7 +78,9 @@ public class BattleFacade {
             repoWaiting.addToWaitingRoom(user_id, repoDecks.getDeckIdWithUserId(user_id));
             String winner = getWinner(user_id, repoWaiting, repoDecks);
 
-            return winner;
+            if(!endFlag) {
+                return winner;
+            } else return "No opponent in queue";
         }
     }
 

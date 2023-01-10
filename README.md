@@ -74,6 +74,10 @@ Ich habe insgesamt drei Fähigkeiten hinzugefügt.
 
 Diese Änderungen sind dazu da, um unentschieden schwieriger zu machen.
 
+# Optionale Features
+    Extended Scoreboard: Elo ist im Scoreboard sichtbar
+    Winrate als Prozentwert sichtbar
+
 # Unit Tests und Curl Script
 
 Ich habe entschieden Unit-Tests vor allem für die Spiellogik zu machen, da diese nicht vom CURL-Script abgedeckt werden.
@@ -82,10 +86,10 @@ Da wird beispielsweise überprüft, ob der Schaden richtig kalkuliert wurde, ode
 
 Da dies mein erstes Java Projekt war, fand ich den Anfang relativ holprig. Es hat gedauert bis ich mich an die Methoden des objektorientierten Programmierens gewöhnt.
 Außerdem musste ich mein Datenmanagement Wissen wieder auffrischen, da dies ein sehr großer Bestandteil des Projekts war.
-<br>
+
 Eine ebenfalls große Hürde war die Planung. Ich hatte bisher noch kein Projekt mit diesem Umfang und konnte deshalb schwer im Oktober voraussagen, was ich Ende Januar 
 brauchen würde. Ich habe sehr oft große Teile des Backends um- bzw. neugeschrieben, was oft wiederum zu anderen unerwarteten Fehlern gefühlt hat.
-<br>
+
 Trotzdem habe ich vieles, vor allem was Planung betrifft, gelernt. Ich habe gelernt, dass man sich Zeit lassen soll, um guten Code zu schreiben. Wenn man etwas richtig macht,
 muss man es kein zweites Mal machen.
 
@@ -95,6 +99,6 @@ Ich habe für das gesamte Projekt ungefähr 100-120 Stunden für dieses Projekt 
 
 # Version Control System
 Ich habe während meines Projekts Github für die Versionsverwaltung verwendet.
-<br>
+
 Das Semesterprojekt ist hier zu finden: 
 [GitHub Projekt Link](https://github.com/israeltshilumbaFHTW/MTCG)

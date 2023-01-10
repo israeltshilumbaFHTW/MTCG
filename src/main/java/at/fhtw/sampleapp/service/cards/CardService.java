@@ -17,8 +17,10 @@ public class CardService implements Service {
     @Override
     public Response handleRequest(Request request) {
         try {
-            if(request.getMethod() == Method.GET) {
+            if (request.getMethod() == Method.GET && request.getPathParts().size() > 1) {
                 return this.cardController.getCardsWithId(request);
+            } else if(request.getMethod() == Method.GET) {
+                return this.cardController.getAllUserCards(request);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

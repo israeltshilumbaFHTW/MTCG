@@ -1,5 +1,6 @@
 package at.fhtw.sampleapp.service.cards;
 
+import at.fhtw.sampleapp.customExceptions.CardNotOwnedException;
 import at.fhtw.sampleapp.model.Card;
 import at.fhtw.sampleapp.service.repoCollection.RepoCard;
 import at.fhtw.sampleapp.service.repoCollection.intermediateTables.RepoCardPackages;
@@ -26,5 +27,22 @@ public class CardFacade {
         cardIdList.forEach(card_id -> cardList.add(repoCard.getCard(card_id)));
 
         return cardList;
+    }
+
+    public Card getCardFromPlayer(int user_id, String card_id) throws CardNotOwnedException {
+        List<Card> cardList = getCardsFromPlayer(user_id);
+        Card foundCard = null;
+
+        for (Card card_iterator : cardList) {
+            if(card_iterator.getCard_id().equals(card_id)) {
+                foundCard = card_iterator;
+                break;
+            }
+        }
+        if(foundCard == null) {
+            throw new CardNotOwnedException("Card not owned");
+        }
+
+        return foundCard;
     }
 }
